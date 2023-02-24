@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import axios from 'axios'
 import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
 import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import type { Address } from 'react-daum-postcode'
 import type { FormValues } from '.'
-import axios from 'axios'
 
 const SecondForm = ({
   register,
@@ -29,8 +29,8 @@ const SecondForm = ({
       return { lng, lat }
     } else {
       return {
-        lat: 0,
-        lng: 0
+        lat: 33.450701,
+        lng: 126.570667
       }
     }
   }, [addressData])
@@ -108,16 +108,14 @@ const SecondForm = ({
           style={{ width: '200px', height: '30px', padding: '3px' }}
           {...register('detailAddress')}
         />
-        <button style={{ width: '100px', height: '40px' }} onClick={openSearchBar}>
+        <button style={{ width: '100px', height: '40px' }} type="button" onClick={openSearchBar}>
           주소 검색
         </button>
-
         {openPostCode && (
           <div>
-            {/* html태그로 안감싸주면 렌더링중 에러 발생  */}
             <DaumPostCode
               autoClose
-              style={{ height: '400px' }}
+              style={{ width: '50%', height: '400px', border: '1px solid black', margin: '1rem auto' }}
               onComplete={(data) => {
                 onSaveAddress(data)
               }}
@@ -127,32 +125,19 @@ const SecondForm = ({
       </div>
       <div style={{ margin: '2rem 0' }}>
         <span>로드뷰 고정하기</span>
-
-        {addressData[0] ? (
-          <Roadview
-            position={{
-              lat: roadviewPosition.lat,
-              lng: roadviewPosition.lng,
-              radius: 50
-            }}
-            style={{
-              width: '50%',
-              height: '400px'
-            }}
-          />
-        ) : (
-          <Roadview
-            position={{
-              lat: 33.450701,
-              lng: 126.570667,
-              radius: 50
-            }}
-            style={{
-              width: '50%',
-              height: '400px'
-            }}
-          />
-        )}
+        <Roadview
+          position={{
+            lat: roadviewPosition.lat,
+            lng: roadviewPosition.lng,
+            radius: 50
+          }}
+          zoom={-1}
+          style={{
+            width: '50%',
+            height: '400px',
+            margin: '1rem auto'
+          }}
+        />
       </div>
       <div style={{ margin: '2rem 0' }}>
         <label>
