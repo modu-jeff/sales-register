@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import DaumPostCode from 'react-daum-postcode'
@@ -19,14 +19,44 @@ const SecondForm = ({
 }) => {
   const navigate = useNavigate()
   const [openPostCode, setOpenPostCode] = useState(false)
-  const [addressData, setAddressData] = useState<Address[]>([])
+  const [addressData, setAddressData] = useState<any[]>([])
+  const [documentCount, setDocumentCount] = useState(-1)
+
+  const roadviewPosition = useMemo(() => {
+    if (addressData[0]) {
+      const lng = Number(addressData[documentCount].documents[0].x)
+      const lat = Number(addressData[documentCount].documents[0].y)
+      return { lng, lat }
+    } else {
+      return {
+        lat: 0,
+        lng: 0
+      }
+    }
+  }, [addressData])
 
   const openSearchBar = () => {
     setOpenPostCode((prev) => !prev)
   }
 
-  const onSaveAddress = (data: Address) => {
-    setValue('address', data.address)
+  const searchAddress = async (address: string) => {
+    const host = 'https://dapi.kakao.com'
+    const url = '/v2/local/search/address.json'
+    const Authorization = import.meta.env.VITE_KAKAO_API_REST
+
+    const response = await axios.get(`${host}${url}?query=${address}`, {
+      headers: { Authorization }
+    })
+    const { data } = response
+    setAddressData((prev) => prev.concat(data))
+    setDocumentCount((prev) => prev + 1)
+  }
+
+  const onSaveAddress = async (data: Address) => {
+    const { roadAddress, jibunAddress } = data
+    await searchAddress(roadAddress)
+    setValue('roadAddress', roadAddress)
+    setValue('jibunAddress', jibunAddress)
     setOpenPostCode(false)
   }
 
@@ -35,35 +65,52 @@ const SecondForm = ({
   }
 
   const prevPage = () => {
-    navigate(-1)
+    navigate('/register/service')
   }
 
-  const searchAddress = async () => {
-    const host = 'https://dapi.kakao.com'
-    const url = '/v2/local/search/address.json'
-    const Authorization = import.meta.env.VITE_KAKAO_API_REST
-
-    const response = await axios.get<Address>(`${host}${url}?query=${watch().address}`, {
-      headers: { Authorization }
-    })
-    const { data } = await response
-    setAddressData((prev) => prev.concat(data))
-  }
-  console.log(addressData)
   return (
     <>
       <h3 style={{ marginTop: '3rem' }}>주차공간에 대해 알려주세요</h3>
       <div style={{ margin: '2rem 0' }}>
         <label>
           <span style={{ marginRight: '1rem' }}>주차장명(건물명)</span>
-          <input type="text" {...register('parkingLotName')} />
+          <input
+            type="text"
+            style={{ width: '200px', height: '30px', padding: '3px' }}
+            {...register('parkingLotName')}
+          />
         </label>
       </div>
       <div style={{ margin: '2rem 0' }}>
         <span style={{ marginRight: '1rem' }}>주소입력</span>
 
-        <input type="text" {...register('address')} />
-        <button onClick={searchAddress}>주소 검색</button>
+        <input
+          type="text"
+          placeholder="도로명 주소"
+          onClick={openSearchBar}
+          disabled
+          style={{ width: '200px', height: '30px', padding: '3px' }}
+          {...register('roadAddress')}
+        />
+
+        <input
+          type="text"
+          placeholder="지번 주소"
+          onClick={openSearchBar}
+          disabled
+          style={{ width: '200px', height: '30px', padding: '3px' }}
+          {...register('jibunAddress')}
+        />
+
+        <input
+          type="text"
+          placeholder="세부 주소를 입력해주세요"
+          style={{ width: '200px', height: '30px', padding: '3px' }}
+          {...register('detailAddress')}
+        />
+        <button style={{ width: '100px', height: '40px' }} onClick={openSearchBar}>
+          주소 검색
+        </button>
 
         {openPostCode && (
           <div>
@@ -80,17 +127,32 @@ const SecondForm = ({
       </div>
       <div style={{ margin: '2rem 0' }}>
         <span>로드뷰 고정하기</span>
-        <span
-          style={{
-            marginLeft: '1rem',
-            width: '100px',
-            height: '30px',
-            border: '1px solid black'
-          }}
-        >
-          여기에 이제 로드뷰 넣을거임
-        </span>
-        {/* <Roadview position={} /> */}
+
+        {addressData[0] ? (
+          <Roadview
+            position={{
+              lat: roadviewPosition.lat,
+              lng: roadviewPosition.lng,
+              radius: 50
+            }}
+            style={{
+              width: '50%',
+              height: '400px'
+            }}
+          />
+        ) : (
+          <Roadview
+            position={{
+              lat: 33.450701,
+              lng: 126.570667,
+              radius: 50
+            }}
+            style={{
+              width: '50%',
+              height: '400px'
+            }}
+          />
+        )}
       </div>
       <div style={{ margin: '2rem 0' }}>
         <label>

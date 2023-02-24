@@ -22,7 +22,9 @@ export interface FormValues {
   relationship: string
   recommendCode: string
   approvalCollectingInfo: boolean
-  address: string
+  roadAddress: string
+  jibunAddress: string
+  detailAddress: string
 }
 
 // TODO: 각 value들을 담을 때 무조건 string으로 담기는걸 다른 타입으로 바꿔서 담을 수 있는지 확인 필요
@@ -40,7 +42,7 @@ const FormContainer = () => {
   }
 
   const prevPage = () => {
-    navigate(-1)
+    navigate('/register/parking-lot-info')
   }
 
   const onSubmit = (data: FieldValues) => {
