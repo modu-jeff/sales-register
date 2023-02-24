@@ -1,7 +1,7 @@
-import FormContainer from '../components/Form';
+import FormContainer from '../components/Form'
 
 const RegisterForm = () => {
-  return <FormContainer />;
-};
+  return <FormContainer />
+}
 
-export default RegisterForm;
+export default RegisterForm

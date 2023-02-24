@@ -1,18 +1,18 @@
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import type { UseFormRegister } from 'react-hook-form';
-import type { FormValues } from '.';
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+import type { UseFormRegister } from 'react-hook-form'
+import type { FormValues } from '.'
 
 const FirstForm = ({ register }: { register: UseFormRegister<FormValues> }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const onCancel = () => {
-    navigate('/request');
-  };
+    navigate('/request')
+  }
 
   const nextPage = () => {
-    navigate('/register/parking-lot-info');
-  };
+    navigate('/register/parking-lot-info')
+  }
 
   return (
     <>
@@ -22,7 +22,7 @@ const FirstForm = ({ register }: { register: UseFormRegister<FormValues> }) => {
           <input
             type="number"
             {...register('parkingLot', {
-              valueAsNumber: true,
+              valueAsNumber: true
             })}
           />
         </label>
@@ -30,11 +30,7 @@ const FirstForm = ({ register }: { register: UseFormRegister<FormValues> }) => {
       <div style={{ margin: '2rem 0' }}>
         <h3>어떻게 수익을 올리고 싶으신가요?</h3>
         <label>
-          <input
-            type="checkbox"
-            value="monthly"
-            {...register('incomingModel')}
-          />
+          <input type="checkbox" value="monthly" {...register('incomingModel')} />
           월주차권 판매
         </label>
         <label>
@@ -88,12 +84,7 @@ const FirstForm = ({ register }: { register: UseFormRegister<FormValues> }) => {
       </div>
       <div style={{ margin: '2rem 0' }}>
         <h3>부가 설명</h3>
-        <textarea
-          cols={50}
-          rows={5}
-          style={{ resize: 'none' }}
-          {...register('description')}
-        />
+        <textarea cols={50} rows={5} style={{ resize: 'none' }} {...register('description')} />
       </div>
       <ButtonWrapper>
         <CancelButton type="button" onClick={onCancel}>
@@ -102,13 +93,13 @@ const FirstForm = ({ register }: { register: UseFormRegister<FormValues> }) => {
         <NextButton onClick={nextPage}>다음</NextButton>
       </ButtonWrapper>
     </>
-  );
-};
+  )
+}
 
-export default FirstForm;
+export default FirstForm
 
-const ButtonWrapper = styled.div``;
+const ButtonWrapper = styled.div``
 
-const CancelButton = styled.button``;
+const CancelButton = styled.button``
 
-const NextButton = styled.button``;
+const NextButton = styled.button``

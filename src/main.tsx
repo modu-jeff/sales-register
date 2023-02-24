@@ -1,12 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import GlobalStyle from './style/GlobalStyle';
-import Router from './Router';
-import { RecoilRoot } from 'recoil';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import GlobalStyle from './style/GlobalStyle'
+import Router from './Router'
+import { RecoilRoot } from 'recoil'
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <React.StrictMode>
@@ -15,4 +13,4 @@ root.render(
       <Router />
     </RecoilRoot>
   </React.StrictMode>
-);
+)

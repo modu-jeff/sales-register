@@ -1,14 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        marginTop: '2rem',
+        marginTop: '2rem'
       }}
     >
       <div
@@ -17,10 +17,10 @@ const Home = () => {
           border: '1px solid black',
           width: '300px',
           height: '150px',
-          textAlign: 'center',
+          textAlign: 'center'
         }}
         onClick={() => {
-          navigate('/register/service');
+          navigate('/register/service')
         }}
       >
         주차장을 유료로 운영중입니다 블라블라
@@ -31,10 +31,10 @@ const Home = () => {
           border: '1px solid black',
           width: '300px',
           height: '150px',
-          textAlign: 'center',
+          textAlign: 'center'
         }}
         onClick={() => {
-          navigate('/register/service');
+          navigate('/register/service')
         }}
       >
         2
@@ -45,10 +45,10 @@ const Home = () => {
           border: '1px solid black',
           width: '300px',
           height: '150px',
-          textAlign: 'center',
+          textAlign: 'center'
         }}
         onClick={() => {
-          navigate('/register/service');
+          navigate('/register/service')
         }}
       >
         3
@@ -59,16 +59,16 @@ const Home = () => {
           border: '1px solid black',
           width: '300px',
           height: '150px',
-          textAlign: 'center',
+          textAlign: 'center'
         }}
         onClick={() => {
-          navigate('/register/service');
+          navigate('/register/service')
         }}
       >
         4
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

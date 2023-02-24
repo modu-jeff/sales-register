@@ -1,6 +1,6 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import RegisterForm from './pages/RegisterForm';
-import Home from './pages/Home';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import RegisterForm from './pages/RegisterForm'
+import Home from './pages/Home'
 
 function Router() {
   return (
@@ -13,7 +13,7 @@ function Router() {
         <Route path="/register/*" element={<RegisterForm />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
-export default Router;
+export default Router
