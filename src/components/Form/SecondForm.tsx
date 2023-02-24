@@ -6,16 +6,16 @@ import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
 import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import type { Address } from 'react-daum-postcode'
-import type { FormValues } from '.'
+import type { FormValues, State } from '.'
 
 const SecondForm = ({
   register,
   setValue,
   watch
 }: {
-  register: UseFormRegister<FormValues>
-  setValue: UseFormSetValue<FormValues>
-  watch: UseFormWatch<FormValues>
+  register: UseFormRegister<State>
+  setValue: UseFormSetValue<State>
+  watch: UseFormWatch<State>
 }) => {
   const navigate = useNavigate()
   const [openPostCode, setOpenPostCode] = useState(false)
@@ -53,10 +53,10 @@ const SecondForm = ({
   }
 
   const onSaveAddress = async (data: Address) => {
-    const { roadAddress, jibunAddress } = data
+    const { roadAddress, jibunAddress, sigunguCode } = data
     await searchAddress(roadAddress)
-    setValue('roadAddress', roadAddress)
-    setValue('jibunAddress', jibunAddress)
+    setValue('address', roadAddress)
+    // setValue('jibunAddress', jibunAddress)
     setOpenPostCode(false)
   }
 
@@ -77,7 +77,7 @@ const SecondForm = ({
           <input
             type="text"
             style={{ width: '200px', height: '30px', padding: '3px' }}
-            {...register('parkingLotName')}
+            {...register('parkinglotName')}
           />
         </label>
       </div>
@@ -90,24 +90,24 @@ const SecondForm = ({
           onClick={openSearchBar}
           disabled
           style={{ width: '200px', height: '30px', padding: '3px' }}
-          {...register('roadAddress')}
+          {...register('address')}
         />
 
-        <input
+        {/* <input
           type="text"
           placeholder="지번 주소"
           onClick={openSearchBar}
           disabled
           style={{ width: '200px', height: '30px', padding: '3px' }}
           {...register('jibunAddress')}
-        />
+        /> */}
 
-        <input
+        {/* <input
           type="text"
           placeholder="세부 주소를 입력해주세요"
           style={{ width: '200px', height: '30px', padding: '3px' }}
           {...register('detailAddress')}
-        />
+        /> */}
         <button style={{ width: '100px', height: '40px' }} type="button" onClick={openSearchBar}>
           주소 검색
         </button>
@@ -131,6 +131,10 @@ const SecondForm = ({
             lng: roadviewPosition.lng,
             radius: 50
           }}
+          onPositionChanged={(event) => {
+            console.log(event)
+            // pan, tilt 값도 담아서 보내줘야함(데이터로)
+          }}
           zoom={-1}
           style={{
             width: '50%',
@@ -148,27 +152,27 @@ const SecondForm = ({
       <div style={{ margin: '2rem 0' }}>
         <h3>유형</h3>
         <label>
-          <input type="radio" value="apartment" {...register('parkingLotType')} />
+          <input type="radio" value={1} {...register('buildingType')} />
           아파트
         </label>
         <label>
-          <input type="radio" value="building" {...register('parkingLotType')} />
-          빌딩
-        </label>
-        <label>
-          <input type="radio" value="officetel" {...register('parkingLotType')} />
-          오피스텔
-        </label>
-        <label>
-          <input type="radio" value="house" {...register('parkingLotType')} />
+          <input type="radio" value={2} {...register('buildingType')} />
           주택
         </label>
         <label>
-          <input type="radio" value="emptySpace" {...register('parkingLotType')} />
+          <input type="radio" value={3} {...register('buildingType')} />
+          빌딩
+        </label>
+        <label>
+          <input type="radio" value={4} {...register('buildingType')} />
+          오피스텔
+        </label>
+        <label>
+          <input type="radio" value={5} {...register('buildingType')} />
           공터
         </label>
         <label>
-          <input type="radio" value="etc" {...register('parkingLotType')} />
+          <input type="radio" value={6} {...register('buildingType')} />
           기타
         </label>
       </div>
