@@ -34,7 +34,7 @@ const FirstForm = ({ register, setValue }: { register: UseFormRegister<State>; s
           월주차권 판매
         </label>
         <label>
-          <input type="checkbox" value="hour" {...register('parkingTypes.isHourly')} />
+          <input type="checkbox" value="hourly" {...register('parkingTypes.isHourly')} />
           시간권 판매
         </label>
       </div>

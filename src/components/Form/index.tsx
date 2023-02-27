@@ -67,7 +67,7 @@ const FormContainer = () => {
     const formattedData = {
       ...rest,
       parkingTypes: {
-        isHourly: data.parkingTypes.isHoury === 'hour' ? true : false,
+        isHourly: data.parkingTypes.isHourly === 'hourly' ? true : false,
         isMonthly: data.parkingTypes.isMonthly === 'monthly' ? true : false
       },
       isOperates24Hours: data.isOperates24Hours === 'true' ? true : false,
@@ -80,6 +80,7 @@ const FormContainer = () => {
       buildingType: Number(data.buildingType),
       ownershipType: Number(data.ownershipType)
     }
+    console.log(formattedData)
     // parkingLotImage는 FormData로 따로 api요청해서 보내야 함
   }
 
