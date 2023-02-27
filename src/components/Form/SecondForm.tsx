@@ -102,7 +102,7 @@ const SecondForm = ({
       <h3 style={{ marginTop: '3rem' }}>주차공간에 대해 알려주세요</h3>
       <div style={{ margin: '2rem 0' }}>
         <label>
-          <span style={{ marginRight: '1rem' }}>주차장명(건물명)</span>
+          <span style={{ marginRight: '1rem' }}>주차장명(건물명)(선택입력)</span>
           <input
             type="text"
             style={{ width: '200px', height: '30px', padding: '3px' }}
@@ -111,7 +111,72 @@ const SecondForm = ({
         </label>
       </div>
       <div style={{ margin: '2rem 0' }}>
-        <span style={{ marginRight: '1rem' }}>주소입력</span>
+        <h3>유형*</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+          <label>
+            <input
+              type="radio"
+              value={1}
+              {...register('buildingType', {
+                valueAsNumber: true
+              })}
+            />
+            아파트
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={2}
+              {...register('buildingType', {
+                valueAsNumber: true
+              })}
+            />
+            주택
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={3}
+              {...register('buildingType', {
+                valueAsNumber: true
+              })}
+            />
+            빌딩
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={4}
+              {...register('buildingType', {
+                valueAsNumber: true
+              })}
+            />
+            오피스텔
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={5}
+              {...register('buildingType', {
+                valueAsNumber: true
+              })}
+            />
+            공터
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={6}
+              {...register('buildingType', {
+                valueAsNumber: true
+              })}
+            />
+            기타
+          </label>
+        </div>
+      </div>
+      <div style={{ margin: '2rem 0' }}>
+        <span style={{ marginRight: '1rem' }}>주차장주소*</span>
 
         <input
           type="text"
@@ -151,7 +216,7 @@ const SecondForm = ({
         )}
       </div>
       <div style={{ margin: '2rem 0' }}>
-        <span>로드뷰 고정하기</span>
+        <span>주차 환경을 파악할 수 있도록 로드뷰를 조정해주세요(선택)</span>
         <Roadview
           position={{
             lat: roadviewPosition.latitude,
@@ -173,11 +238,11 @@ const SecondForm = ({
       <div style={{ margin: '2rem 0' }}>
         <label>
           {/* 파일 첨부는 최종단계에서 진행되어야 하는 문제로 로컬에 임시 저장하는 방법을 구상해야함 */}
-          사진등록하기
+          주차장 사진을 사진첨부해 주세요(선택)
           <input
             style={{ marginLeft: '1rem' }}
             type="file"
-            accept="image/*, .pdf"
+            accept="image/*"
             {...(register('parkingLotImage'),
             {
               onChange: (e) => onSaveFiles(e),
@@ -186,69 +251,7 @@ const SecondForm = ({
           />
         </label>
       </div>
-      <div style={{ margin: '2rem 0' }}>
-        <h3>유형</h3>
-        <label>
-          <input
-            type="radio"
-            value={1}
-            {...register('buildingType', {
-              valueAsNumber: true
-            })}
-          />
-          아파트
-        </label>
-        <label>
-          <input
-            type="radio"
-            value={2}
-            {...register('buildingType', {
-              valueAsNumber: true
-            })}
-          />
-          주택
-        </label>
-        <label>
-          <input
-            type="radio"
-            value={3}
-            {...register('buildingType', {
-              valueAsNumber: true
-            })}
-          />
-          빌딩
-        </label>
-        <label>
-          <input
-            type="radio"
-            value={4}
-            {...register('buildingType', {
-              valueAsNumber: true
-            })}
-          />
-          오피스텔
-        </label>
-        <label>
-          <input
-            type="radio"
-            value={5}
-            {...register('buildingType', {
-              valueAsNumber: true
-            })}
-          />
-          공터
-        </label>
-        <label>
-          <input
-            type="radio"
-            value={6}
-            {...register('buildingType', {
-              valueAsNumber: true
-            })}
-          />
-          기타
-        </label>
-      </div>
+
       <ButtonWrapper>
         <CancelButton type="button" onClick={prevPage}>
           이전

@@ -55,13 +55,13 @@ const ThirdForm = ({
       <h3 style={{ marginTop: '3rem' }}>이름과 연락처를 알려주세요</h3>
       <div style={{ margin: '2rem 0' }}>
         <label>
-          <span style={{ marginRight: '1rem' }}>이름</span>
+          <span style={{ marginRight: '1rem' }}>이름*</span>
           <input type="text" placeholder="담당자 이름" {...register('requesterName')} />
         </label>
       </div>
       <div style={{ margin: '2rem 0' }}>
         <label>
-          <span style={{ marginRight: '1rem' }}>휴대폰 번호</span>
+          <span style={{ marginRight: '1rem' }}>휴대폰 번호*</span>
           <input type="tel" placeholder="숫자만 입력" {...register('phone')} />
         </label>
         <button type="button" onClick={phoneValidation}>
@@ -83,7 +83,7 @@ const ThirdForm = ({
         )}
       </div>
       <div style={{ margin: '2rem 0' }}>
-        <div>소유관계</div>
+        <div>소유관계*</div>
         <label>
           <input
             type="radio"
@@ -106,13 +106,7 @@ const ThirdForm = ({
         </label>
       </div>
       <div style={{ margin: '2rem 0' }}>
-        <label>
-          <span style={{ marginRight: '1rem' }}>추천코드</span>
-          <input type="text" placeholder="추천코드 입력" {...register('promotionCode')} />
-        </label>
-      </div>
-      <div style={{ margin: '2rem 0' }}>
-        <div>개인정보 수집에 동의</div>
+        <div>개인정보 수집에 동의*</div>
         <label>
           <input type="radio" value="true" {...register('isPrivacyAgreed')} />
           동의
@@ -120,6 +114,12 @@ const ThirdForm = ({
         <label style={{ marginLeft: '1rem' }}>
           <input type="radio" value="false" {...register('isPrivacyAgreed')} />
           비동의
+        </label>
+      </div>
+      <div style={{ margin: '2rem 0' }}>
+        <label>
+          <span style={{ marginRight: '1rem' }}>추천코드(선택)</span>
+          <input type="text" placeholder="추천코드 입력" {...register('promotionCode')} />
         </label>
       </div>
     </>
