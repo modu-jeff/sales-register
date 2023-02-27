@@ -35,34 +35,15 @@ export interface State {
     isSiteManager: boolean // 현장관리자 여부 ex) false
     isBarriers: boolean // 차단기 여부 ex) false
   }
+  authCode: {
+    // 유저 인증코드
+    authCodeSeq: number // 인증코드 시퀀스 ex) 1
+  }
   description: string // 부가설명 ex) 응애 나 애기주차장
-  parkingLotImage: File // 임시
-  promotionCode: string // 임시
+  isPrivacyAgreed: boolean // 개인정보 수집동의 ex) true
+  parkingLotImage: FormData // 임시
+  promotionCode: string // 추천코드 ex) 1234
 }
-
-export interface FormValues {
-  parkingLot: string
-  incomingModel: string[]
-  allDayParking: boolean
-  fieldManager: boolean
-  crossingGate: boolean
-  visitor: boolean
-  description: string
-  parkingLotImage: File
-  parkingLotType: string
-  parkingLotName: string
-  userName: string
-  phoneNumber: string
-  relationship: string
-  recommendCode: string
-  approvalCollectingInfo: boolean
-  roadAddress: string
-  jibunAddress: string
-  detailAddress: string
-}
-
-// TODO: 각 value들을 담을 때 무조건 string으로 담기는걸 다른 타입으로 바꿔서 담을 수 있는지 확인 필요
-// number는 확인 완료, boolean 등등
 
 const FormContainer = () => {
   const navigate = useNavigate()
@@ -80,7 +61,26 @@ const FormContainer = () => {
   }
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data)
+    const { parkingLotImage, ...rest } = data
+
+    // POST 요청시 formattedData를 body에 담아서 보낼 것
+    const formattedData = {
+      ...rest,
+      parkingTypes: {
+        isHourly: data.parkingTypes.isHoury === 'hour' ? true : false,
+        isMonthly: data.parkingTypes.isMonthly === 'monthly' ? true : false
+      },
+      isOperates24Hours: data.isOperates24Hours === 'true' ? true : false,
+      parkinglotOptions: {
+        isExternalRestricted: data.parkinglotOptions.isExternalRestricted === 'true' ? true : false,
+        isSiteManager: data.parkinglotOptions.isSiteManager === 'true' ? true : false,
+        isBarriers: data.parkinglotOptions.isBarriers === 'true' ? true : false
+      },
+      isPrivacyAgreed: data.isPrivacyAgreed === 'true' ? true : false,
+      buildingType: Number(data.buildingType),
+      ownershipType: Number(data.ownershipType)
+    }
+    // parkingLotImage는 FormData로 따로 api요청해서 보내야 함
   }
 
   const onError = (data: FieldErrors) => {
@@ -128,8 +128,8 @@ const FormContainer = () => {
 export default FormContainer
 
 const RegisterSection = styled.section`
-  width: 70%;
-  margin: 2rem auto;
+  width: 100%;
+  margin: 1rem auto 2rem auto;
 `
 
 const FormTemplate = styled.form``

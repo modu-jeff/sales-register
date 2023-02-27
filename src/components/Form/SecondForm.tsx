@@ -6,7 +6,7 @@ import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
 import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import type { Address } from 'react-daum-postcode'
-import type { FormValues, State } from '.'
+import type { State } from '.'
 
 const SecondForm = ({
   register,
@@ -19,21 +19,22 @@ const SecondForm = ({
 }) => {
   const navigate = useNavigate()
   const [openPostCode, setOpenPostCode] = useState(false)
-  const [addressData, setAddressData] = useState<any[]>([])
-  const [documentCount, setDocumentCount] = useState(-1)
+
+  const { latitude, longitude, roadViewPan, roadViewTilt, roadViewZoom } = watch()
 
   const roadviewPosition = useMemo(() => {
-    if (addressData[0]) {
-      const lng = Number(addressData[documentCount].documents[0].x)
-      const lat = Number(addressData[documentCount].documents[0].y)
-      return { lng, lat }
+    if (latitude && longitude) {
+      return { latitude, longitude, pan: roadViewPan, tilt: roadViewTilt, zoom: roadViewZoom }
     } else {
       return {
-        lat: 33.450701,
-        lng: 126.570667
+        latitude: 33.450701,
+        longitude: 126.570667,
+        pan: 0,
+        tilt: 0,
+        zoom: 0
       }
     }
-  }, [addressData])
+  }, [latitude, longitude])
 
   const openSearchBar = () => {
     setOpenPostCode((prev) => !prev)
@@ -43,21 +44,49 @@ const SecondForm = ({
     const host = 'https://dapi.kakao.com'
     const url = '/v2/local/search/address.json'
     const Authorization = import.meta.env.VITE_KAKAO_API_REST
-
     const response = await axios.get(`${host}${url}?query=${address}`, {
       headers: { Authorization }
     })
     const { data } = response
-    setAddressData((prev) => prev.concat(data))
-    setDocumentCount((prev) => prev + 1)
+
+    setValue('longitude', Number(data.documents[0].x))
+    setValue('latitude', Number(data.documents[0].y))
   }
 
-  const onSaveAddress = async (data: Address) => {
-    const { roadAddress, jibunAddress, sigunguCode } = data
-    await searchAddress(roadAddress)
+  const onSaveAddress = async (address: Address) => {
+    const { roadAddress, sigunguCode } = address
     setValue('address', roadAddress)
-    // setValue('jibunAddress', jibunAddress)
+    setValue('regionCode', sigunguCode)
+
+    await searchAddress(roadAddress)
     setOpenPostCode(false)
+  }
+
+  const onSaveRoadViewData = (roadview: kakao.maps.Roadview) => {
+    const { pan, tilt, zoom } = roadview.getViewpoint()
+    const position = roadview.getPosition()
+
+    setValue('latitude', position.getLat())
+    setValue('longitude', position.getLng())
+    setValue('roadViewPan', pan)
+    setValue('roadViewTilt', tilt)
+    setValue('roadViewZoom', zoom ? zoom : 0)
+  }
+
+  const onSaveFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // TODO: 해당 부분 api 따로 별도 제작 예정
+    const formData = new FormData()
+    const { files } = e.target
+    if (files) {
+      Object.keys(files).forEach((key, i) => {
+        formData.append('files', files[i])
+        formData.append('type', files[i].type.includes('image') ? 'parkinglotPhotos' : 'documents') // 타입은 documents랑 parkinglotPhotos 두가지가 있다.
+        formData.append('hashCode', 'aaaaaa') // 여기의 해쉬코드는 신청하기 누른 후 api의 응답 값으로 받아야한다.
+      })
+      setValue('parkingLotImage', formData)
+    } else {
+      setValue('parkingLotImage', formData)
+    }
   }
 
   const nextPage = () => {
@@ -115,10 +144,8 @@ const SecondForm = ({
           <div>
             <DaumPostCode
               autoClose
-              style={{ width: '50%', height: '400px', border: '1px solid black', margin: '1rem auto' }}
-              onComplete={(data) => {
-                onSaveAddress(data)
-              }}
+              style={{ width: '100%', height: '350px', border: '1px solid black', margin: '1rem auto' }}
+              onComplete={onSaveAddress}
             />
           </div>
         )}
@@ -127,52 +154,98 @@ const SecondForm = ({
         <span>로드뷰 고정하기</span>
         <Roadview
           position={{
-            lat: roadviewPosition.lat,
-            lng: roadviewPosition.lng,
+            lat: roadviewPosition.latitude,
+            lng: roadviewPosition.longitude,
             radius: 50
           }}
-          onPositionChanged={(event) => {
-            console.log(event)
-            // pan, tilt 값도 담아서 보내줘야함(데이터로)
-          }}
-          zoom={-1}
+          pan={roadviewPosition.pan}
+          tilt={roadviewPosition.tilt}
+          zoom={roadviewPosition.zoom}
+          onPositionChanged={onSaveRoadViewData}
+          onViewpointChange={onSaveRoadViewData}
           style={{
-            width: '50%',
-            height: '400px',
+            width: '100%',
+            height: '350px',
             margin: '1rem auto'
           }}
         />
       </div>
       <div style={{ margin: '2rem 0' }}>
         <label>
+          {/* 파일 첨부는 최종단계에서 진행되어야 하는 문제로 로컬에 임시 저장하는 방법을 구상해야함 */}
           사진등록하기
-          <input style={{ marginLeft: '1rem' }} type="file" multiple={true} {...register('parkingLotImage')} />
+          <input
+            style={{ marginLeft: '1rem' }}
+            type="file"
+            accept="image/*, .pdf"
+            {...(register('parkingLotImage'),
+            {
+              onChange: (e) => onSaveFiles(e),
+              multiple: true
+            })}
+          />
         </label>
       </div>
       <div style={{ margin: '2rem 0' }}>
         <h3>유형</h3>
         <label>
-          <input type="radio" value={1} {...register('buildingType')} />
+          <input
+            type="radio"
+            value={1}
+            {...register('buildingType', {
+              valueAsNumber: true
+            })}
+          />
           아파트
         </label>
         <label>
-          <input type="radio" value={2} {...register('buildingType')} />
+          <input
+            type="radio"
+            value={2}
+            {...register('buildingType', {
+              valueAsNumber: true
+            })}
+          />
           주택
         </label>
         <label>
-          <input type="radio" value={3} {...register('buildingType')} />
+          <input
+            type="radio"
+            value={3}
+            {...register('buildingType', {
+              valueAsNumber: true
+            })}
+          />
           빌딩
         </label>
         <label>
-          <input type="radio" value={4} {...register('buildingType')} />
+          <input
+            type="radio"
+            value={4}
+            {...register('buildingType', {
+              valueAsNumber: true
+            })}
+          />
           오피스텔
         </label>
         <label>
-          <input type="radio" value={5} {...register('buildingType')} />
+          <input
+            type="radio"
+            value={5}
+            {...register('buildingType', {
+              valueAsNumber: true
+            })}
+          />
           공터
         </label>
         <label>
-          <input type="radio" value={6} {...register('buildingType')} />
+          <input
+            type="radio"
+            value={6}
+            {...register('buildingType', {
+              valueAsNumber: true
+            })}
+          />
           기타
         </label>
       </div>
