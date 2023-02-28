@@ -6,18 +6,18 @@ import styled from 'styled-components'
 
 import type { IAllianceForm } from '.'
 import type { Address } from 'react-daum-postcode'
-import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import type { FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
 const SecondForm = ({
   register,
   setValue,
   watch,
-  setFormStep
+  errors
 }: {
   register: UseFormRegister<IAllianceForm>
   setValue: UseFormSetValue<IAllianceForm>
   watch: UseFormWatch<IAllianceForm>
-  setFormStep: React.Dispatch<React.SetStateAction<number>>
+  errors: FieldErrors<IAllianceForm>
 }) => {
   const [openPostCode, setOpenPostCode] = useState(false)
 
@@ -90,14 +90,6 @@ const SecondForm = ({
     }
   }
 
-  const nextPage = () => {
-    setFormStep(3)
-  }
-
-  const prevPage = () => {
-    setFormStep(1)
-  }
-
   return (
     <>
       <h3 style={{ marginTop: '3rem' }}>주차공간에 대해 알려주세요</h3>
@@ -115,30 +107,67 @@ const SecondForm = ({
         <h3>유형*</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
           <label>
-            <input type="radio" value={1} {...register('buildingType')} />
+            <input
+              type="radio"
+              value={1}
+              {...register('buildingType', {
+                required: '유형을 선택해주세요'
+              })}
+            />
             아파트
           </label>
           <label>
-            <input type="radio" value={2} {...register('buildingType')} />
+            <input
+              type="radio"
+              value={2}
+              {...register('buildingType', {
+                required: '유형을 선택해주세요'
+              })}
+            />
             주택
           </label>
           <label>
-            <input type="radio" value={3} {...register('buildingType')} />
+            <input
+              type="radio"
+              value={3}
+              {...register('buildingType', {
+                required: '유형을 선택해주세요'
+              })}
+            />
             빌딩
           </label>
           <label>
-            <input type="radio" value={4} {...register('buildingType')} />
+            <input
+              type="radio"
+              value={4}
+              {...register('buildingType', {
+                required: '유형을 선택해주세요'
+              })}
+            />
             오피스텔
           </label>
           <label>
-            <input type="radio" value={5} {...register('buildingType')} />
+            <input
+              type="radio"
+              value={5}
+              {...register('buildingType', {
+                required: '유형을 선택해주세요'
+              })}
+            />
             공터
           </label>
           <label>
-            <input type="radio" value={6} {...register('buildingType')} />
+            <input
+              type="radio"
+              value={6}
+              {...register('buildingType', {
+                required: '유형을 선택해주세요'
+              })}
+            />
             기타
           </label>
         </div>
+        {errors.buildingType && <div style={{ color: 'red', fontSize: '12px' }}>{errors.buildingType.message}</div>}
       </div>
       <div style={{ margin: '2rem 0' }}>
         <span style={{ marginRight: '1rem' }}>주차장주소*</span>
@@ -147,9 +176,10 @@ const SecondForm = ({
           type="text"
           placeholder="도로명 주소"
           onClick={openSearchBar}
-          disabled
           style={{ width: '200px', height: '30px', padding: '3px' }}
-          {...register('address')}
+          {...register('address', {
+            required: '주소를 입력해주세요'
+          })}
         />
 
         {/* <input
@@ -179,6 +209,7 @@ const SecondForm = ({
             />
           </div>
         )}
+        {errors.address && <div style={{ color: 'red', fontSize: '12px' }}>{errors.address.message}</div>}
       </div>
       <div style={{ margin: '2rem 0' }}>
         <span>주차 환경을 파악할 수 있도록 로드뷰를 조정해주세요(선택)</span>
@@ -216,13 +247,6 @@ const SecondForm = ({
           />
         </label>
       </div>
-
-      <ButtonWrapper>
-        <CancelButton type="button" onClick={prevPage}>
-          이전
-        </CancelButton>
-        <NextButton onClick={nextPage}>다음</NextButton>
-      </ButtonWrapper>
     </>
   )
 }

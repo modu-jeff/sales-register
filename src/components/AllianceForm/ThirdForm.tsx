@@ -2,16 +2,18 @@ import axios from 'axios'
 import React, { useState } from 'react'
 
 import type { IAllianceForm } from '.'
-import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import type { FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
 const ThirdForm = ({
   register,
   watch,
-  setValue
+  setValue,
+  errors
 }: {
   register: UseFormRegister<IAllianceForm>
   watch: UseFormWatch<IAllianceForm>
   setValue: UseFormSetValue<IAllianceForm>
+  errors: FieldErrors<IAllianceForm>
 }) => {
   const [isAuth, setIsAuth] = useState(false)
   const [verifyCode, setVerifyCode] = useState('')
@@ -57,17 +59,31 @@ const ThirdForm = ({
       <div style={{ margin: '2rem 0' }}>
         <label>
           <span style={{ marginRight: '1rem' }}>이름*</span>
-          <input type="text" placeholder="담당자 이름" {...register('requesterName')} />
+          <input
+            type="text"
+            placeholder="담당자 이름"
+            {...register('requesterName', {
+              required: '이름을 입력해주세요'
+            })}
+          />
         </label>
+        {errors.requesterName && <div style={{ color: 'red', fontSize: '12px' }}>{errors.requesterName.message}</div>}
       </div>
       <div style={{ margin: '2rem 0' }}>
         <label>
           <span style={{ marginRight: '1rem' }}>휴대폰 번호*</span>
-          <input type="tel" placeholder="숫자만 입력" {...register('phone')} />
+          <input
+            type="tel"
+            placeholder="숫자만 입력"
+            {...register('phone', {
+              required: '휴대폰 번호를 입력해주세요'
+            })}
+          />
         </label>
         <button type="button" onClick={phoneValidation}>
           인증번호요청
         </button>
+        {errors.phone && <div style={{ color: 'red', fontSize: '12px' }}>{errors.phone.message}</div>}
         {isAuth && (
           <div>
             <input
@@ -90,7 +106,7 @@ const ThirdForm = ({
             type="radio"
             value={1}
             {...register('ownershipType', {
-              valueAsNumber: true
+              required: '소유관계를 선택해주세요'
             })}
           />
           소유주
@@ -100,22 +116,38 @@ const ThirdForm = ({
             type="radio"
             value={2}
             {...register('ownershipType', {
-              valueAsNumber: true
+              required: '소유관계를 선택해주세요'
             })}
           />
           임차인 또는 직원
         </label>
+        {errors.ownershipType && <div style={{ color: 'red', fontSize: '12px' }}>{errors.ownershipType.message}</div>}
       </div>
       <div style={{ margin: '2rem 0' }}>
         <div>개인정보 수집에 동의*</div>
         <label>
-          <input type="radio" value="true" {...register('isPrivacyAgreed')} />
+          <input
+            type="radio"
+            value="true"
+            {...register('isPrivacyAgreed', {
+              required: '개인정보 수집에 동의해주세요'
+            })}
+          />
           동의
         </label>
         <label style={{ marginLeft: '1rem' }}>
-          <input type="radio" value="false" {...register('isPrivacyAgreed')} />
+          <input
+            type="radio"
+            value="false"
+            {...register('isPrivacyAgreed', {
+              required: '개인정보 수집에 동의해주세요'
+            })}
+          />
           비동의
         </label>
+        {errors.isPrivacyAgreed && (
+          <div style={{ color: 'red', fontSize: '12px' }}>{errors.isPrivacyAgreed.message}</div>
+        )}
       </div>
       <div style={{ margin: '2rem 0' }}>
         <label>

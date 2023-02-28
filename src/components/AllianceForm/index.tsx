@@ -52,14 +52,20 @@ const AllianceFormContainer = () => {
   const navigate = useNavigate()
 
   const [formStep, setFormStep] = useState(1)
-  const { handleSubmit, register, setValue, watch } = useForm<IAllianceForm>()
+  const { handleSubmit, register, setValue, watch, formState } = useForm<IAllianceForm>()
+  const { errors } = formState
 
   const onCancel = () => {
     navigate('/request')
   }
 
   const prevPage = () => {
-    setFormStep(2)
+    switch (formStep) {
+      case 3:
+        return setFormStep(2)
+      case 2:
+        return setFormStep(1)
+    }
   }
 
   const onSubmit = (data: FieldValues) => {
@@ -83,7 +89,15 @@ const AllianceFormContainer = () => {
       buildingType: Number(data.buildingType),
       ownershipType: Number(data.ownershipType)
     }
-    console.log(formattedData)
+
+    switch (formStep) {
+      case 1:
+        return setFormStep(2)
+      case 2:
+        return setFormStep(3)
+      case 3:
+        return console.log(formattedData)
+    }
 
     // parkingLotImage는 FormData로 따로 api요청해서 보내야 함
   }
@@ -106,24 +120,18 @@ const AllianceFormContainer = () => {
         </ProgressStatusBar>
       </ProgressStatusBox>
       <FormTemplate onSubmit={handleSubmit(onSubmit, onError)}>
-        {formStep === 1 && <FirstForm register={register} setFormStep={setFormStep} />}
-        {formStep === 2 && (
-          <SecondForm register={register} setValue={setValue} watch={watch} setFormStep={setFormStep} />
-        )}
-        {formStep === 3 && (
-          <>
-            <ThirdForm setValue={setValue} register={register} watch={watch} />
-            <ButtonWrapper>
-              <CancelButton type="button" onClick={onCancel}>
-                취소
-              </CancelButton>
-              <CancelButton type="button" onClick={prevPage}>
-                이전
-              </CancelButton>
-              <NextButton>신청하기</NextButton>
-            </ButtonWrapper>
-          </>
-        )}
+        {formStep === 1 && <FirstForm errors={errors} register={register} />}
+        {formStep === 2 && <SecondForm register={register} errors={errors} setValue={setValue} watch={watch} />}
+        {formStep === 3 && <ThirdForm setValue={setValue} errors={errors} register={register} watch={watch} />}
+        <ButtonWrapper>
+          <CancelButton formStep={formStep} type="button" onClick={onCancel}>
+            취소
+          </CancelButton>
+          <PrevButton formStep={formStep} type="button" onClick={prevPage}>
+            이전
+          </PrevButton>
+          <NextButton>{formStep === 3 ? '신청하기' : '다음'}</NextButton>
+        </ButtonWrapper>
       </FormTemplate>
     </RegisterSection>
   )
@@ -140,7 +148,13 @@ const FormTemplate = styled.form``
 
 const ButtonWrapper = styled.div``
 
-const CancelButton = styled.button``
+const CancelButton = styled.button<{ formStep: number }>`
+  display: ${({ formStep }) => (formStep === 1 ? 'inline-block' : 'none')};
+`
+
+const PrevButton = styled.button<{ formStep: number }>`
+  display: ${({ formStep }) => (formStep === 1 ? 'none' : 'inline-block')};
+`
 
 const NextButton = styled.button``
 
