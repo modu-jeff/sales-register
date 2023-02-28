@@ -95,7 +95,7 @@ const FirstForm = ({
           아니오
         </label>
       </div>
-      <div style={{ margin: '2rem 0' }}>
+      <div style={{ width: '98%', margin: '2rem 0' }}>
         <h3>부가 설명(선택입력)</h3>
         <textarea style={{ width: '100%', height: '90px', resize: 'none' }} {...register('description')} />
       </div>
