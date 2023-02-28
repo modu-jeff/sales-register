@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FieldErrors, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -7,7 +7,7 @@ import FirstForm from './FirstForm'
 import SecondForm from './SecondForm'
 import ThirdForm from './ThirdForm'
 
-import type { FieldValues } from 'react-hook-form'
+import type { FieldErrors, FieldValues } from 'react-hook-form'
 
 export interface IAllianceForm {
   latitude: number // 위도: 소수점 네자리까지 ex) 37.532600
@@ -63,22 +63,23 @@ const AllianceFormContainer = () => {
   }
 
   const onSubmit = (data: FieldValues) => {
+    // data 타입은 IAllianceForm임
     const { parkingLotImage, ...rest } = data
 
     // POST 요청시 formattedData를 body에 담아서 보낼 것
     const formattedData = {
       ...rest,
       parkingTypes: {
-        isHourly: data.parkingTypes.isHourly === 'hourly' ? true : false,
-        isMonthly: data.parkingTypes.isMonthly === 'monthly' ? true : false
+        isHourly: data.parkingTypes.isHourly === 'hourly',
+        isMonthly: data.parkingTypes.isMonthly === 'monthly'
       },
-      isOperates24Hours: data.isOperates24Hours === 'true' ? true : false,
+      isOperates24Hours: data.isOperates24Hours === 'true',
       parkinglotOptions: {
-        isExternalRestricted: data.parkinglotOptions.isExternalRestricted === 'true' ? true : false,
-        isSiteManager: data.parkinglotOptions.isSiteManager === 'true' ? true : false,
-        isBarriers: data.parkinglotOptions.isBarriers === 'true' ? true : false
+        isExternalRestricted: data.parkinglotOptions.isExternalRestricted === 'true',
+        isSiteManager: data.parkinglotOptions.isSiteManager === 'true',
+        isBarriers: data.parkinglotOptions.isBarriers === 'true'
       },
-      isPrivacyAgreed: data.isPrivacyAgreed === 'true' ? true : false,
+      isPrivacyAgreed: data.isPrivacyAgreed === 'true',
       buildingType: Number(data.buildingType),
       ownershipType: Number(data.ownershipType)
     }
