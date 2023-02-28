@@ -92,7 +92,7 @@ const FirstForm = ({
       </div>
       <div style={{ margin: '2rem 0' }}>
         <h3>부가 설명(선택입력)</h3>
-        <textarea cols={50} rows={5} style={{ resize: 'none' }} {...register('description')} />
+        <textarea style={{ width: '100%', height: '90px', resize: 'none' }} {...register('description')} />
       </div>
       <ButtonWrapper>
         <CancelButton type="button" onClick={onCancel}>

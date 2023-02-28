@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         width: 414px;
+        padding: 1rem;
         margin: 0 auto;
         box-sizing: border-box;
     }
