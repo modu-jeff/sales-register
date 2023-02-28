@@ -2,23 +2,23 @@ import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import type { IState } from '.'
+import type { IAllianceForm } from '.'
 import type { Address } from 'react-daum-postcode'
 import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
 const SecondForm = ({
   register,
   setValue,
-  watch
+  watch,
+  setFormStep
 }: {
-  register: UseFormRegister<IState>
-  setValue: UseFormSetValue<IState>
-  watch: UseFormWatch<IState>
+  register: UseFormRegister<IAllianceForm>
+  setValue: UseFormSetValue<IAllianceForm>
+  watch: UseFormWatch<IAllianceForm>
+  setFormStep: React.Dispatch<React.SetStateAction<number>>
 }) => {
-  const navigate = useNavigate()
   const [openPostCode, setOpenPostCode] = useState(false)
 
   const { latitude, longitude, roadViewPan, roadViewTilt, roadViewZoom } = watch()
@@ -91,11 +91,11 @@ const SecondForm = ({
   }
 
   const nextPage = () => {
-    navigate('/register/user-info')
+    setFormStep(3)
   }
 
   const prevPage = () => {
-    navigate('/register/service')
+    setFormStep(1)
   }
 
   return (
@@ -115,63 +115,27 @@ const SecondForm = ({
         <h3>유형*</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
           <label>
-            <input
-              type="radio"
-              value={1}
-              {...register('buildingType', {
-                valueAsNumber: true
-              })}
-            />
+            <input type="radio" value={1} {...register('buildingType')} />
             아파트
           </label>
           <label>
-            <input
-              type="radio"
-              value={2}
-              {...register('buildingType', {
-                valueAsNumber: true
-              })}
-            />
+            <input type="radio" value={2} {...register('buildingType')} />
             주택
           </label>
           <label>
-            <input
-              type="radio"
-              value={3}
-              {...register('buildingType', {
-                valueAsNumber: true
-              })}
-            />
+            <input type="radio" value={3} {...register('buildingType')} />
             빌딩
           </label>
           <label>
-            <input
-              type="radio"
-              value={4}
-              {...register('buildingType', {
-                valueAsNumber: true
-              })}
-            />
+            <input type="radio" value={4} {...register('buildingType')} />
             오피스텔
           </label>
           <label>
-            <input
-              type="radio"
-              value={5}
-              {...register('buildingType', {
-                valueAsNumber: true
-              })}
-            />
+            <input type="radio" value={5} {...register('buildingType')} />
             공터
           </label>
           <label>
-            <input
-              type="radio"
-              value={6}
-              {...register('buildingType', {
-                valueAsNumber: true
-              })}
-            />
+            <input type="radio" value={6} {...register('buildingType')} />
             기타
           </label>
         </div>

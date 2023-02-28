@@ -2,15 +2,15 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import type { IState } from '.'
-import type { UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import type { IAllianceForm } from '.'
+import type { UseFormRegister } from 'react-hook-form'
 
 const FirstForm = ({
   register,
-  setValue
+  setFormStep
 }: {
-  register: UseFormRegister<IState>
-  setValue: UseFormSetValue<IState>
+  register: UseFormRegister<IAllianceForm>
+  setFormStep: React.Dispatch<React.SetStateAction<number>>
 }) => {
   const navigate = useNavigate()
 
@@ -19,7 +19,7 @@ const FirstForm = ({
   }
 
   const nextPage = () => {
-    navigate('/register/parking-lot-info')
+    setFormStep(2)
   }
 
   return (
@@ -86,7 +86,12 @@ const FirstForm = ({
           외부인출입 가능
         </label>
         <label>
-          <input type="radio" value="false" {...register('parkinglotOptions.isExternalRestricted')} />
+          <input
+            type="radio"
+            value="false"
+            onClick={() => alert('외부인 출입이 불가능한 주차장은 현재 서비스를 제공하지 않습니다.')}
+            {...register('parkinglotOptions.isExternalRestricted')}
+          />
           아니오
         </label>
       </div>

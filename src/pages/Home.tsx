@@ -21,10 +21,11 @@ const Home = () => {
           marginBottom: '1rem',
           backgroundColor: '#f2f2f2',
           width: '300px',
-          height: '150px'
+          height: '150px',
+          cursor: 'pointer'
         }}
         onClick={() => {
-          navigate('/register/service')
+          navigate('/register/alliance')
         }}
       >
         <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>
@@ -42,10 +43,11 @@ const Home = () => {
           backgroundColor: '#f2f2f2',
           width: '300px',
           height: '150px',
-          textAlign: 'center'
+          textAlign: 'center',
+          cursor: 'pointer'
         }}
         onClick={() => {
-          navigate('/register/service')
+          navigate('/register/consignment')
         }}
       >
         <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>주차장 위탁운영을 맡기고 싶습니다.(위탁운영)</p>
@@ -60,10 +62,11 @@ const Home = () => {
           backgroundColor: '#f2f2f2',
           width: '300px',
           height: '150px',
-          textAlign: 'center'
+          textAlign: 'center',
+          cursor: 'pointer'
         }}
         onClick={() => {
-          navigate('/register/service')
+          navigate('/register/share')
         }}
       >
         비워두는 주차공간으로 수익을 내고 싶습니다.(공유)
@@ -78,7 +81,8 @@ const Home = () => {
           backgroundColor: '#f2f2f2',
           width: '300px',
           height: '30px',
-          textAlign: 'center'
+          textAlign: 'center',
+          cursor: 'pointer'
         }}
         onClick={() => {
           navigate('/register/service')
@@ -96,10 +100,11 @@ const Home = () => {
           backgroundColor: '#f2f2f2',
           width: '300px',
           height: '30px',
-          textAlign: 'center'
+          textAlign: 'center',
+          cursor: 'pointer'
         }}
         onClick={() => {
-          navigate('/register/service')
+          alert('팝업 들어가유\n전화번호 안내도 들어가유')
         }}
       >
         <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>

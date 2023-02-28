@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FieldErrors, useForm } from 'react-hook-form'
-import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import FirstForm from './FirstForm'
@@ -9,7 +9,7 @@ import ThirdForm from './ThirdForm'
 
 import type { FieldValues } from 'react-hook-form'
 
-export interface IState {
+export interface IAllianceForm {
   latitude: number // 위도: 소수점 네자리까지 ex) 37.532600
   longitude: number // 경도: 소수점 여섯자리까지 ex) 127.024612
   parkinglotName: string // 주차장명 ex) 예시주차장
@@ -48,19 +48,18 @@ export interface IState {
   promotionCode: string // 추천코드 ex) 1234
 }
 
-const FormContainer = () => {
+const AllianceFormContainer = () => {
   const navigate = useNavigate()
-  const location = useLocation()
-  const { handleSubmit, register, setValue, watch } = useForm<IState>()
 
-  const currentLocation = location.pathname.split('/').pop()
+  const [formStep, setFormStep] = useState(1)
+  const { handleSubmit, register, setValue, watch } = useForm<IAllianceForm>()
 
   const onCancel = () => {
     navigate('/request')
   }
 
   const prevPage = () => {
-    navigate('/register/parking-lot-info')
+    setFormStep(2)
   }
 
   const onSubmit = (data: FieldValues) => {
@@ -84,6 +83,7 @@ const FormContainer = () => {
       ownershipType: Number(data.ownershipType)
     }
     console.log(formattedData)
+
     // parkingLotImage는 FormData로 따로 api요청해서 보내야 함
   }
 
@@ -94,42 +94,41 @@ const FormContainer = () => {
   return (
     <RegisterSection>
       <ProgressStatusBox>
-        <ProgressStatusBar currentLocation={currentLocation} path="service">
+        <ProgressStatusBar formStep={formStep} step={1}>
           희망서비스 선택
         </ProgressStatusBar>
-        <ProgressStatusBar currentLocation={currentLocation} path="parking-lot-info">
+        <ProgressStatusBar formStep={formStep} step={2}>
           주차공간 정보 입력
         </ProgressStatusBar>
-        <ProgressStatusBar currentLocation={currentLocation} path="user-info">
+        <ProgressStatusBar formStep={formStep} step={3}>
           신청자 정보 입력
         </ProgressStatusBar>
       </ProgressStatusBox>
       <FormTemplate onSubmit={handleSubmit(onSubmit, onError)}>
-        <Routes>
-          <Route path="/service" element={<FirstForm setValue={setValue} register={register} />} />
-          <Route
-            path="/parking-lot-info"
-            element={<SecondForm register={register} setValue={setValue} watch={watch} />}
-          />
-          <Route path="/user-info" element={<ThirdForm setValue={setValue} register={register} watch={watch} />} />
-        </Routes>
-        {currentLocation === 'user-info' && (
-          <ButtonWrapper>
-            <CancelButton type="button" onClick={onCancel}>
-              취소
-            </CancelButton>
-            <CancelButton type="button" onClick={prevPage}>
-              이전
-            </CancelButton>
-            <NextButton>신청하기</NextButton>
-          </ButtonWrapper>
+        {formStep === 1 && <FirstForm register={register} setFormStep={setFormStep} />}
+        {formStep === 2 && (
+          <SecondForm register={register} setValue={setValue} watch={watch} setFormStep={setFormStep} />
+        )}
+        {formStep === 3 && (
+          <>
+            <ThirdForm setValue={setValue} register={register} watch={watch} />
+            <ButtonWrapper>
+              <CancelButton type="button" onClick={onCancel}>
+                취소
+              </CancelButton>
+              <CancelButton type="button" onClick={prevPage}>
+                이전
+              </CancelButton>
+              <NextButton>신청하기</NextButton>
+            </ButtonWrapper>
+          </>
         )}
       </FormTemplate>
     </RegisterSection>
   )
 }
 
-export default FormContainer
+export default AllianceFormContainer
 
 const RegisterSection = styled.section`
   width: 100%;
@@ -149,12 +148,12 @@ const ProgressStatusBox = styled.div`
 `
 
 const ProgressStatusBar = styled.div<{
-  path: string
-  currentLocation?: string
+  formStep: number
+  step: number
 }>`
   width: 300px;
   height: 50px;
   border: 1px solid black;
-  background-color: ${({ path, currentLocation }) => (path === currentLocation ? '#DAEFFE' : 'none')};
+  background-color: ${({ step, formStep }) => (step === formStep ? '#DAEFFE' : 'none')};
   text-align: center;
 `
