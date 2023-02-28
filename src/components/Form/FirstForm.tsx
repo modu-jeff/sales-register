@@ -1,9 +1,17 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import type { UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import type { State } from '.'
 
-const FirstForm = ({ register, setValue }: { register: UseFormRegister<State>; setValue: UseFormSetValue<State> }) => {
+import type { IState } from '.'
+import type { UseFormRegister, UseFormSetValue } from 'react-hook-form'
+
+const FirstForm = ({
+  register,
+  setValue
+}: {
+  register: UseFormRegister<IState>
+  setValue: UseFormSetValue<IState>
+}) => {
   const navigate = useNavigate()
 
   const onCancel = () => {

@@ -1,3 +1,4 @@
+import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import RegisterForm from './pages/RegisterForm'
 import Home from './pages/Home'

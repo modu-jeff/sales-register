@@ -1,16 +1,17 @@
 import axios from 'axios'
-import { useState } from 'react'
+import React, { useState } from 'react'
+
+import type { IState } from '.'
 import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
-import type { State } from '.'
 
 const ThirdForm = ({
   register,
   watch,
   setValue
 }: {
-  register: UseFormRegister<State>
-  watch: UseFormWatch<State>
-  setValue: UseFormSetValue<State>
+  register: UseFormRegister<IState>
+  watch: UseFormWatch<IState>
+  setValue: UseFormSetValue<IState>
 }) => {
   const [isAuth, setIsAuth] = useState(false)
   const [verifyCode, setVerifyCode] = useState('')

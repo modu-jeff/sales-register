@@ -1,3 +1,4 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
@@ -17,13 +18,15 @@ const Home = () => {
           border: '1px solid black',
           width: '300px',
           height: '150px',
-          textAlign: 'center'
+          textAlign: 'center',
+          whiteSpace: 'normal',
+          wordBreak: 'keep-all'
         }}
         onClick={() => {
           navigate('/register/service')
         }}
       >
-        주차장을 유료로 운영중입니다 블라블라
+        주차장을 유료로 운영중입니다. 모두의주차장에 모바일 주차권을 판매하고 싶습니다.
       </div>
       <div
         style={{

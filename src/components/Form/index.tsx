@@ -1,12 +1,15 @@
-import styled from 'styled-components'
-import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
+import React from 'react'
 import { FieldErrors, useForm } from 'react-hook-form'
-import type { FieldValues } from 'react-hook-form'
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
+import styled from 'styled-components'
+
 import FirstForm from './FirstForm'
 import SecondForm from './SecondForm'
 import ThirdForm from './ThirdForm'
 
-export interface State {
+import type { FieldValues } from 'react-hook-form'
+
+export interface IState {
   latitude: number // 위도: 소수점 네자리까지 ex) 37.532600
   longitude: number // 경도: 소수점 여섯자리까지 ex) 127.024612
   parkinglotName: string // 주차장명 ex) 예시주차장
@@ -48,7 +51,7 @@ export interface State {
 const FormContainer = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { handleSubmit, register, setValue, watch } = useForm<State>()
+  const { handleSubmit, register, setValue, watch } = useForm<IState>()
 
   const currentLocation = location.pathname.split('/').pop()
 

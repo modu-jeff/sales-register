@@ -6,7 +6,7 @@ module.exports = {
     es2021: true,
     node: true
   },
-  globas: {
+  globals: {
     daum: true,
     kakao: true
   },
@@ -22,10 +22,13 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
-    '@typescript-eslint/interface-name-prefix': [
+    '@typescript-eslint/naming-convention': [
       'error',
       {
-        prefixWithI: 'always'
+        selector: 'interface',
+        format: ['PascalCase'],
+        // I를 붙이도록 강제 하는 옵션
+        prefix: ['I']
       }
     ]
   },
@@ -67,7 +70,6 @@ module.exports = {
                 pattern: '@/types/**',
                 group: 'type'
               },
-
               {
                 pattern: '@/enums',
                 group: 'parent'

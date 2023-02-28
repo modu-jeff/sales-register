@@ -1,21 +1,23 @@
-import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
 import axios from 'axios'
+import React from 'react'
+import { useMemo, useState } from 'react'
 import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
-import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+
+import type { IState } from '.'
 import type { Address } from 'react-daum-postcode'
-import type { State } from '.'
+import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
 const SecondForm = ({
   register,
   setValue,
   watch
 }: {
-  register: UseFormRegister<State>
-  setValue: UseFormSetValue<State>
-  watch: UseFormWatch<State>
+  register: UseFormRegister<IState>
+  setValue: UseFormSetValue<IState>
+  watch: UseFormWatch<IState>
 }) => {
   const navigate = useNavigate()
   const [openPostCode, setOpenPostCode] = useState(false)
