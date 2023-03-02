@@ -73,19 +73,23 @@ const SecondForm = ({
     setValue('roadViewZoom', zoom ? zoom : 0)
   }
 
-  const onSaveFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     // TODO: 해당 부분 api 따로 별도 제작 예정
     const formData = new FormData()
     const { files } = e.target
-    if (files) {
+    if (files && files.length < 5) {
       Object.keys(files).forEach((key, i) => {
         formData.append('files', files[i])
-        formData.append('type', files[i].type.includes('image') ? 'parkinglotPhotos' : 'documents') // 타입은 documents랑 parkinglotPhotos 두가지가 있다.
-        formData.append('hashCode', 'aaaaaa') // 여기의 해쉬코드는 신청하기 누른 후 api의 응답 값으로 받아야한다.
       })
-      setValue('parkingLotImage', formData)
+      // POST요청
+      // hosturl: 뭐지?
+      // params: /online-sales-request/file/parkinglot-photo
+      // headers: { 'Content-Type': 'multipart/form-data' }
+      // body: formData중 files만
+      // response: data.files[i].path로 옴 files는 배열, 배열안에 {path, thumbnailPath, width, height}로 옴
+      // setValue('parkinglotPhotos', `api응답값`)
     } else {
-      setValue('parkingLotImage', formData)
+      return alert('파일은 4개까지만 업로드 가능합니다.')
     }
   }
 
@@ -238,11 +242,9 @@ const SecondForm = ({
             style={{ marginLeft: '1rem' }}
             type="file"
             accept="image/*"
-            {...(register('parkingLotImage'),
-            {
-              onChange: (e) => onSaveFiles(e),
-              multiple: true
-            })}
+            multiple
+            onChange={(e) => onSaveFiles(e)}
+            maxLength={4}
           />
         </label>
       </div>
