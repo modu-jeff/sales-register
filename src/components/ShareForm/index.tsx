@@ -43,7 +43,7 @@ export interface IShareForm {
     authCodeSeq: number // 인증코드 시퀀스 ex) 1
   }
   description: string // 부가설명 ex) 응애 나 애기주차장
-  isPrivacyAgreed: boolean // 개인정보 수집동의 ex) true
+  isPrivacyAgreed: boolean | string // 개인정보 수집동의 ex) true
   parkingLotImage: string // 임시
   promotionCode: string // 추천코드 ex) 1234
 }
@@ -52,9 +52,7 @@ const ShareFormContainer = () => {
   const navigate = useNavigate()
 
   const [formStep, setFormStep] = useState(1)
-  const { handleSubmit, register, setValue, watch, formState } = useForm<IShareForm>({
-    mode: 'onChange'
-  })
+  const { handleSubmit, register, setValue, watch, formState } = useForm<IShareForm>({ mode: 'onChange' })
   const { errors } = formState
 
   const onCancel = () => {

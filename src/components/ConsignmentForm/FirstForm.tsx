@@ -122,7 +122,9 @@ const FirstForm = ({
             type="radio"
             value="true"
             {...register('parkinglotOptions.isExternalRestricted', {
-              required: '외부인 출입 가능여부를 선택해주세요'
+              required: '외부인 출입 가능여부를 선택해주세요',
+              validate: (value) =>
+                value === 'true' || '외부인 출입이 불가능한 주차장은 현재 서비스를 제공하지 않습니다.'
             })}
           />
           외부인출입 가능
@@ -133,7 +135,9 @@ const FirstForm = ({
             value="false"
             onClick={() => alert('외부인 출입이 불가능한 주차장은 현재 서비스를 제공하지 않습니다.')}
             {...register('parkinglotOptions.isExternalRestricted', {
-              required: '외부인 출입 가능여부를 선택해주세요'
+              required: '외부인 출입 가능여부를 선택해주세요',
+              validate: (value) =>
+                value === 'true' || '외부인 출입이 불가능한 주차장은 현재 서비스를 제공하지 않습니다.'
             })}
           />
           아니오

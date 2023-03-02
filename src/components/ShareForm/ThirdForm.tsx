@@ -130,7 +130,8 @@ const ThirdForm = ({
             type="radio"
             value="true"
             {...register('isPrivacyAgreed', {
-              required: '개인정보 수집에 동의해주세요'
+              required: '개인정보 수집에 동의해주세요',
+              validate: (value) => value === 'true' || '개인정보 수집에 비동의하시면 서비스 이용이 불가합니다.'
             })}
           />
           동의
@@ -139,8 +140,10 @@ const ThirdForm = ({
           <input
             type="radio"
             value="false"
+            onClick={() => alert('개인정보 수집에 비동의하시면 서비스 이용이 불가합니다.')}
             {...register('isPrivacyAgreed', {
-              required: '개인정보 수집에 동의해주세요'
+              required: '개인정보 수집에 동의해주세요',
+              validate: (value) => value === 'true' || '개인정보 수집에 비동의하시면 서비스 이용이 불가합니다.'
             })}
           />
           비동의
