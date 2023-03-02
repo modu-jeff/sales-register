@@ -2,7 +2,6 @@ import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
-import styled from 'styled-components'
 
 import type { IAllianceForm } from '.'
 import type { Address } from 'react-daum-postcode'
@@ -252,9 +251,3 @@ const SecondForm = ({
 }
 
 export default SecondForm
-
-const ButtonWrapper = styled.div``
-
-const CancelButton = styled.button``
-
-const NextButton = styled.button``

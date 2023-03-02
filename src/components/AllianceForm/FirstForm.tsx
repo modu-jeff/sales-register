@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import type { IAllianceForm } from '.'
 import type { FieldErrors, UseFormRegister } from 'react-hook-form'
@@ -152,9 +151,3 @@ const FirstForm = ({
 }
 
 export default FirstForm
-
-const ButtonWrapper = styled.div``
-
-const CancelButton = styled.button``
-
-const NextButton = styled.button``
