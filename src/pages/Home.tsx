@@ -85,7 +85,7 @@ const Home = () => {
           cursor: 'pointer'
         }}
         onClick={() => {
-          navigate('/register/service')
+          alert('앱으로 이동 아니면\n앱다운해서 앱에서 진행해주쇼 라는 메시지 표출')
         }}
       >
         <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>거주자우선주차장을 공유하고 싶으신가요?(거주자)</p>
@@ -104,7 +104,7 @@ const Home = () => {
           cursor: 'pointer'
         }}
         onClick={() => {
-          alert('팝업 들어가유\n전화번호 안내도 들어가유')
+          alert('팝업 들어가유\n전화번호 안내도 들어가유 라는 메시지 표출')
         }}
       >
         <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>

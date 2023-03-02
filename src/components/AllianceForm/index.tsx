@@ -79,6 +79,8 @@ const AllianceFormContainer = () => {
         isHourly: data.parkingTypes.isHourly === 'hourly',
         isMonthly: data.parkingTypes.isMonthly === 'monthly'
       },
+      numberOfParkinglot: Number(data.numberOfParkinglot),
+      partnerType: 2,
       isOperates24Hours: data.isOperates24Hours === 'true',
       parkinglotOptions: {
         isExternalRestricted: data.parkinglotOptions.isExternalRestricted === 'true',
@@ -95,8 +97,10 @@ const AllianceFormContainer = () => {
         return setFormStep(2)
       case 2:
         return setFormStep(3)
-      case 3:
+      case 3: {
+        // formattedData를 body에 담아서 보내는 api 코드 작성
         return console.log(formattedData)
+      }
     }
 
     // parkingLotImage는 FormData로 따로 api요청해서 보내야 함
