@@ -10,15 +10,18 @@ module.exports = {
     daum: true,
     kakao: true
   },
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest'
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'import'],
   rules: {
-    'no-console': process.env.NODE_ENV === 'prod' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'prod' ? 'warn' : 'off',
-    'no-unused-vars': process.env.NODE_ENV === 'prod' ? 'warn' : 'off',
+    'no-console': process.env.VITE_ENV === 'prod' ? 'error' : 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
