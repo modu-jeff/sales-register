@@ -1,7 +1,9 @@
 {
-  "name": "sales-register",
-  "private": true,
+  "name": "sales-register-integration",
   "version": "0.0.0",
+  "engines": {
+    "node": "^16.15"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
