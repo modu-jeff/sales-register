@@ -44,7 +44,7 @@ export interface IAllianceForm {
   }
   description: string // 부가설명 ex) 응애 나 애기주차장
   isPrivacyAgreed: boolean // 개인정보 수집동의 ex) true
-  parkingLotImage: FormData // 임시
+  parkingLotImage: string // 임시
   promotionCode: string // 추천코드 ex) 1234
 }
 
