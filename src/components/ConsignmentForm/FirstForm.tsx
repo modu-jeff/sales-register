@@ -14,7 +14,7 @@ const FirstForm = ({
   setProgress: React.Dispatch<React.SetStateAction<number>>
 }) => {
   useEffect(() => {
-    setProgress(25)
+    setProgress(40)
   }, [])
   return (
     <>

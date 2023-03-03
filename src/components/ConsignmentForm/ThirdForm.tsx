@@ -51,7 +51,7 @@ const ThirdForm = ({
   }
 
   useEffect(() => {
-    setProgress(75)
+    setProgress(80)
   }, [])
 
   return (

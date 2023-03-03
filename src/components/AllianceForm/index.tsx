@@ -59,7 +59,7 @@ const AllianceFormContainer = ({ setProgress }: { setProgress: React.Dispatch<Re
   const { errors } = formState
 
   const onCancel = () => {
-    setProgress(0)
+    setProgress(20)
     navigate('/request')
   }
 

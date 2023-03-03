@@ -59,7 +59,7 @@ const ConsignmentFormContainer = ({ setProgress }: { setProgress: React.Dispatch
   const { errors } = formState
 
   const onCancel = () => {
-    setProgress(0)
+    setProgress(20)
     navigate('/request')
   }
 

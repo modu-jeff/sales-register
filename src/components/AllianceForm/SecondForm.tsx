@@ -76,7 +76,7 @@ const SecondForm = ({
   }
 
   useEffect(() => {
-    setProgress(50)
+    setProgress(60)
   }, [])
 
   return (

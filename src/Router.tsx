@@ -7,7 +7,7 @@ import ShareForm from './pages/ShareForm'
 import Home from './pages/Home'
 
 function Router() {
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(20)
 
   return (
     <>
