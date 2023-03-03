@@ -14,10 +14,6 @@ function Router() {
       <ProgressBarContainer>
         <EmptyProgressBar />
         <ProgressBar style={{ width: `${progress}%` }} />
-        {/* <ProgressBar />
-        <ProgressBar />
-        <ProgressBar />
-        <ProgressBar /> */}
       </ProgressBarContainer>
       <BrowserRouter>
         <Routes>
