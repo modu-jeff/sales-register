@@ -1,119 +1,117 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 
 const Home = () => {
   const navigate = useNavigate()
+  const [formType, setFormType] = useState('')
+
+  const handleFormType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormType(e.target.value)
+  }
+
+  const moveToNextPage = () => {
+    if (!formType) {
+      return alert('신청유형을 선택해주세요')
+    } else {
+      navigate(formType)
+    }
+  }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: '2rem'
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '1rem',
-          marginBottom: '1rem',
-          backgroundColor: '#f2f2f2',
-          width: '300px',
-          height: '150px',
-          cursor: 'pointer'
-        }}
-        onClick={() => {
-          navigate('/register/alliance')
-        }}
-      >
-        <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>
+    <>
+      <HeaderTitle>신청유형을 선택해주세요</HeaderTitle>
+
+      <RequestTemplate>
+        <RequestRadio
+          id="alliance"
+          type="radio"
+          value="/register/alliance"
+          name="form-type"
+          onChange={handleFormType}
+        />
+        <RequestLabel formType={formType} to="/register/alliance" htmlFor="alliance">
           주차장을 유료로 운영중입니다.
-          <br /> 모두의주차장에 모바일 주차권을 판매하고 싶습니다.(제휴)
-        </p>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '1rem',
-          marginBottom: '1rem',
-          backgroundColor: '#f2f2f2',
-          width: '300px',
-          height: '150px',
-          textAlign: 'center',
-          cursor: 'pointer'
-        }}
-        onClick={() => {
-          navigate('/register/consignment')
-        }}
-      >
-        <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>주차장 위탁운영을 맡기고 싶습니다.(위탁운영)</p>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '1rem',
-          marginBottom: '1rem',
-          backgroundColor: '#f2f2f2',
-          width: '300px',
-          height: '150px',
-          textAlign: 'center',
-          cursor: 'pointer'
-        }}
-        onClick={() => {
-          navigate('/register/share')
-        }}
-      >
-        비워두는 주차공간으로 수익을 내고 싶습니다.(공유)
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '1rem',
-          marginBottom: '1rem',
-          backgroundColor: '#f2f2f2',
-          width: '300px',
-          height: '30px',
-          textAlign: 'center',
-          cursor: 'pointer'
-        }}
-        onClick={() => {
-          alert('앱으로 이동 아니면\n앱다운해서 앱에서 진행해주쇼 라는 메시지 표출')
-        }}
-      >
-        <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>거주자우선주차장을 공유하고 싶으신가요?(거주자)</p>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '1rem',
-          marginBottom: '1rem',
-          backgroundColor: '#f2f2f2',
-          width: '300px',
-          height: '30px',
-          textAlign: 'center',
-          cursor: 'pointer'
-        }}
+          <br />
+          앱에 주차권을 판매하고 싶습니다.
+        </RequestLabel>
+        <RequestRadio
+          id="consignment"
+          type="radio"
+          value="/register/consignment"
+          name="form-type"
+          onChange={handleFormType}
+        />
+        <RequestLabel formType={formType} to="/register/consignment" htmlFor="consignment">
+          주차장 위탁운영을 맡기고 싶습니다.
+        </RequestLabel>
+        <RequestRadio id="share" type="radio" value="/register/share" name="form-type" onChange={handleFormType} />
+        <RequestLabel formType={formType} to="/register/share" htmlFor="share">
+          비워두는 주차공간을 활용하여
+          <br /> 수익을 내고 싶습니다.
+        </RequestLabel>
+      </RequestTemplate>
+
+      <MultipleAllianceRequestBox
         onClick={() => {
           alert('팝업 들어가유\n전화번호 안내도 들어가유 라는 메시지 표출')
         }}
       >
-        <p style={{ textAlign: 'center', wordBreak: 'keep-all' }}>
-          2개소 이상의 주차장을 소유하고 있으신가요?(팝업창띄우기)
-        </p>
-      </div>
-    </div>
+        2개소 이상 제휴신청을 원하시나요?
+      </MultipleAllianceRequestBox>
+
+      <ProgressButton type="button" onClick={moveToNextPage}>
+        다음
+      </ProgressButton>
+    </>
   )
 }
 
 export default Home
+
+const HeaderTitle = styled.h3`
+  font-size: 22px;
+`
+
+const RequestTemplate = styled.div`
+  display: grid;
+  row-gap: 1rem;
+  margin: 2rem auto;
+  grid-template-columns: 1fr 5fr;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+`
+
+const RequestLabel = styled.label<{ formType: string; to: string }>`
+  font-size: 18px;
+  color: ${({ formType, to }) => (formType === to ? '#0099fe' : '#000')};
+`
+
+const RequestRadio = styled.input`
+  width: 20px;
+  height: 20px;
+`
+
+const MultipleAllianceRequestBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  background-color: #f2f2f2;
+  width: 100%;
+  height: 60px;
+  border-radius: 4px;
+  cursor: pointer;
+`
+
+const ProgressButton = styled.button`
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0099fe;
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+`
