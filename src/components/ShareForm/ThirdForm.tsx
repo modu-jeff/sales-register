@@ -1,165 +1,124 @@
 import axios from 'axios'
-import React, { useState } from 'react'
-
-import type { IShareForm } from '.'
-import type { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from 'react-hook-form'
+import React, { useEffect } from 'react'
+import styled from 'styled-components'
 
 const ThirdForm = ({
-  register,
-  watch,
-  setValue,
-  errors
+  setPreview,
+  preview,
+  setProgress
 }: {
-  register: UseFormRegister<IShareForm>
-  watch: UseFormWatch<IShareForm>
-  setValue: UseFormSetValue<IShareForm>
-  errors: FieldErrors<IShareForm>
+  setPreview: React.Dispatch<
+    React.SetStateAction<
+      {
+        image: string
+        name: string
+      }[]
+    >
+  >
+  preview: { image: string; name: string }[]
+  setProgress: React.Dispatch<React.SetStateAction<number>>
 }) => {
-  const [isAuth, setIsAuth] = useState(false)
-  const [verifyCode, setVerifyCode] = useState('')
+  const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    // TODO: 해당 부분 api 따로 별도 제작 예정
+    const formData = new FormData()
+    const { files } = e.target
+    if (files && files.length < 5) {
+      Object.keys(files).forEach((key, i) => {
+        if (preview.length < 4) {
+          setPreview((prev) => prev.concat({ image: URL.createObjectURL(files[i]), name: files[i].name }))
+        } else {
+          e.target.value = ''
+          return alert('파일은 4개까지만 업로드 가능합니다.')
+        }
+        formData.append('files', files[i])
+      })
 
-  const phoneValidation = async () => {
-    const host = 'https://api-dev.modudev.cloud/user'
-    const endPoint = '/code/send'
-    if (!watch().phone) return alert('폰번을 넣어주셈')
-
-    try {
-      setIsAuth(true)
-      // const response = await axios.post(`${host}${endPoint}`, { phone: watch().phone })
-      // const { data } = response
-      // setValue('authCode.authCodeSeq', data.data.authCodeSeq)
-      setValue('authCode.authCodeSeq', 10)
-    } catch (err) {
-      console.error(err)
+      // POST요청
+      // hosturl: 뭐지?
+      // params: /online-sales-request/file/parkinglot-photo
+      // headers: { 'Content-Type': 'multipart/form-data' }
+      // body: formData중 files만
+      // response: data.files[i].path로 옴 files는 배열, 배열안에 {path, thumbnailPath, width, height}로 옴
+      // setValue('parkinglotPhotos', `api응답값`)
+    } else {
+      return alert('파일은 4개까지만 업로드 가능합니다.')
     }
   }
 
-  const verifyAuthCode = async () => {
-    const host = 'https://api-dev.modudev.cloud/user'
-    const endPoint = '/code/verify'
-    const { authCodeSeq } = watch().authCode
-    // TODO: 나중에 백엔드에서 에러코드를 정리하고, 그에 맞게 에러처리를 해야함
-    // try {
-    //   await axios.post(`${host}${endPoint}`, { authCodeSeq, code: verifyCode, phone: watch().phone })
-    // } catch (err: any) {
-    //   switch (err.code) {
-    //     case 10204:
-    //       return alert(err.message)
-    //     case 10203:
-    //       return alert(err.message)
-    //     case 10202:
-    //       return alert(err.message)
-    //   }
-    // }
+  const onDeletePreview = (image: string) => {
+    setPreview((prev) => prev.filter((item) => item.image !== image))
   }
+
+  useEffect(() => {
+    setProgress(80)
+  }, [])
 
   return (
     <>
-      <h3 style={{ marginTop: '3rem' }}>이름과 연락처를 알려주세요</h3>
+      <h3 style={{ marginTop: '2rem', fontSize: '22px', lineHeight: '32px' }}>
+        주차장 사진을 등록해주세요
+        <br />
+        4장까지 등록가능
+      </h3>
       <div style={{ margin: '2rem 0' }}>
-        <label>
-          <span style={{ marginRight: '1rem' }}>이름*</span>
-          <input
-            type="text"
-            placeholder="담당자 이름"
-            {...register('requesterName', {
-              required: '이름을 입력해주세요'
-            })}
-          />
-        </label>
-        {errors.requesterName && <div style={{ color: 'red', fontSize: '12px' }}>{errors.requesterName.message}</div>}
+        {/* 파일 첨부는 최종단계에서 진행되어야 하는 문제로 로컬에 임시 저장하는 방법을 구상해야함 */}
+        <ImageInput type="file" id="file" accept="image/*" multiple onChange={(e) => onSaveFiles(e)} />
+        <ImageLabel htmlFor="file">파일찾기</ImageLabel>
       </div>
-      <div style={{ margin: '2rem 0' }}>
-        <label>
-          <span style={{ marginRight: '1rem' }}>휴대폰 번호*</span>
-          <input
-            type="tel"
-            placeholder="숫자만 입력"
-            {...register('phone', {
-              required: '휴대폰 번호를 입력해주세요'
-            })}
-          />
-        </label>
-        <button type="button" onClick={phoneValidation}>
-          인증번호요청
-        </button>
-        {errors.phone && <div style={{ color: 'red', fontSize: '12px' }}>{errors.phone.message}</div>}
-        {isAuth && (
-          <div>
-            <input
-              type="text"
-              placeholder="인증 번호 입력"
-              onChange={(e) => {
-                setVerifyCode(e.target.value)
-              }}
-            />
-            <button type="button" onClick={verifyAuthCode}>
-              인증하기
-            </button>
-          </div>
-        )}
-      </div>
-      <div style={{ margin: '2rem 0' }}>
-        <div>소유관계*</div>
-        <label>
-          <input
-            type="radio"
-            value={1}
-            {...register('ownershipType', {
-              required: '소유관계를 선택해주세요'
-            })}
-          />
-          소유주
-        </label>
-        <label style={{ marginLeft: '1rem' }}>
-          <input
-            type="radio"
-            value={2}
-            {...register('ownershipType', {
-              required: '소유관계를 선택해주세요'
-            })}
-          />
-          임차인 또는 직원
-        </label>
-        {errors.ownershipType && <div style={{ color: 'red', fontSize: '12px' }}>{errors.ownershipType.message}</div>}
-      </div>
-      <div style={{ margin: '2rem 0' }}>
-        <div>개인정보 수집에 동의*</div>
-        <label>
-          <input
-            type="radio"
-            value="true"
-            {...register('isPrivacyAgreed', {
-              required: '개인정보 수집에 동의해주세요',
-              validate: (value) => value === 'true' || '개인정보 수집에 비동의하시면 서비스 이용이 불가합니다.'
-            })}
-          />
-          동의
-        </label>
-        <label style={{ marginLeft: '1rem' }}>
-          <input
-            type="radio"
-            value="false"
-            onClick={() => alert('개인정보 수집에 비동의하시면 서비스 이용이 불가합니다.')}
-            {...register('isPrivacyAgreed', {
-              required: '개인정보 수집에 동의해주세요',
-              validate: (value) => value === 'true' || '개인정보 수집에 비동의하시면 서비스 이용이 불가합니다.'
-            })}
-          />
-          비동의
-        </label>
-        {errors.isPrivacyAgreed && (
-          <div style={{ color: 'red', fontSize: '12px' }}>{errors.isPrivacyAgreed.message}</div>
-        )}
-      </div>
-      <div style={{ margin: '2rem 0' }}>
-        <label>
-          <span style={{ marginRight: '1rem' }}>추천코드(선택)</span>
-          <input type="text" placeholder="추천코드 입력" {...register('promotionCode')} />
-        </label>
-      </div>
+      {preview.length > 0 &&
+        preview.map(({ image, name }, i) => {
+          return (
+            <ImageContainer key={i}>
+              <PreviewImage alt={name} src={image} />
+              <DeleteButton onClick={() => onDeletePreview(image)} type="button">
+                X
+              </DeleteButton>
+            </ImageContainer>
+          )
+        })}
     </>
   )
 }
 
 export default ThirdForm
+
+const PreviewImage = styled.img`
+  width: 100%;
+  object-fit: contain;
+`
+
+const ImageInput = styled.input`
+  display: none;
+`
+
+const ImageLabel = styled.label`
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  border: 1px solid #0099fe;
+  color: #0099fe;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+`
+
+const ImageContainer = styled.div`
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin-bottom: 1rem;
+`
+
+const DeleteButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: -10px;
+  background-color: transparent;
+  border: none;
+  color: lightgrey;
+  font-size: 38px;
+  font-weight: bolder;
+  cursor: pointer;
+`
