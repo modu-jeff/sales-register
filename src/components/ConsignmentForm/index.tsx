@@ -67,10 +67,8 @@ const ConsignmentFormContainer = ({ setProgress }: { setProgress: React.Dispatch
     switch (formStep) {
       case 4:
         return setFormStep(3)
-
       case 3:
         return setFormStep(2)
-
       case 2:
         return setFormStep(1)
     }
