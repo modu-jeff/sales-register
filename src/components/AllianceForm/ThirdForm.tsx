@@ -23,7 +23,6 @@ const ThirdForm = ({
     // TODO: 해당 부분 api 따로 별도 제작 예정
     const formData = new FormData()
     const { files } = e.target
-    console.log(e.target)
     if (files && files.length < 5) {
       Object.keys(files).forEach((key, i) => {
         if (preview.length < 4) {

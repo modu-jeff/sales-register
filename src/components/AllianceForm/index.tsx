@@ -188,18 +188,3 @@ const NextButton = styled.button`
   height: 50px;
   cursor: pointer;
 `
-
-const ProgressStatusBox = styled.div`
-  display: flex;
-`
-
-const ProgressStatusBar = styled.div<{
-  formStep: number
-  step: number
-}>`
-  width: 300px;
-  height: 50px;
-  border: 1px solid black;
-  background-color: ${({ step, formStep }) => (step === formStep ? '#DAEFFE' : 'none')};
-  text-align: center;
-`

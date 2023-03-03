@@ -20,7 +20,7 @@ function Router() {
           <Route path="*" element={<Navigate to="/request" />} />
           <Route path="/request" element={<Home />} />
           <Route path="/register/alliance" element={<AllianceForm setProgress={setProgress} />} />
-          <Route path="/register/consignment" element={<ConsignmentForm />} />
+          <Route path="/register/consignment" element={<ConsignmentForm setProgress={setProgress} />} />
           <Route path="/register/share" element={<ShareForm />} />
         </Routes>
       </BrowserRouter>
