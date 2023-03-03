@@ -5,7 +5,8 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
 
   body {
-    width: 414px;
+    width: 100%;
+    max-width: 414px;
     padding: 1rem;
     margin: 0 auto;
     box-sizing: border-box;
