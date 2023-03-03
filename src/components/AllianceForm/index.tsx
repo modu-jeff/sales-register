@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import FirstForm from './FirstForm'
+import FourthForm from './FourthForm'
 import SecondForm from './SecondForm'
 import ThirdForm from './ThirdForm'
 
@@ -48,21 +49,28 @@ export interface IAllianceForm {
   promotionCode: string // 추천코드 ex) 1234
 }
 
-const AllianceFormContainer = () => {
+const AllianceFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React.SetStateAction<number>> }) => {
   const navigate = useNavigate()
 
   const [formStep, setFormStep] = useState(1)
+  const [preview, setPreview] = useState<{ image: string; name: string }[]>([])
+
   const { handleSubmit, register, setValue, watch, formState } = useForm<IAllianceForm>({ mode: 'onChange' })
   const { errors } = formState
 
   const onCancel = () => {
+    setProgress(0)
     navigate('/request')
   }
 
   const prevPage = () => {
     switch (formStep) {
+      case 4:
+        return setFormStep(3)
+
       case 3:
         return setFormStep(2)
+
       case 2:
         return setFormStep(1)
     }
@@ -97,7 +105,9 @@ const AllianceFormContainer = () => {
         return setFormStep(2)
       case 2:
         return setFormStep(3)
-      case 3: {
+      case 3:
+        return setFormStep(4)
+      case 4: {
         // formattedData를 body에 담아서 보내는 api 코드 작성
         return console.log(formattedData)
       }
@@ -111,33 +121,41 @@ const AllianceFormContainer = () => {
   }
 
   return (
-    <RegisterSection>
-      <ProgressStatusBox>
-        <ProgressStatusBar formStep={formStep} step={1}>
-          희망서비스 선택
-        </ProgressStatusBar>
-        <ProgressStatusBar formStep={formStep} step={2}>
-          주차공간 정보 입력
-        </ProgressStatusBar>
-        <ProgressStatusBar formStep={formStep} step={3}>
-          신청자 정보 입력
-        </ProgressStatusBar>
-      </ProgressStatusBox>
-      <FormTemplate onSubmit={handleSubmit(onSubmit, onError)}>
-        {formStep === 1 && <FirstForm errors={errors} register={register} />}
-        {formStep === 2 && <SecondForm register={register} errors={errors} setValue={setValue} watch={watch} />}
-        {formStep === 3 && <ThirdForm setValue={setValue} errors={errors} register={register} watch={watch} />}
-        <ButtonWrapper>
-          <CancelButton formStep={formStep} type="button" onClick={onCancel}>
-            취소
-          </CancelButton>
-          <PrevButton formStep={formStep} type="button" onClick={prevPage}>
-            이전
-          </PrevButton>
-          <NextButton>{formStep === 3 ? '신청하기' : '다음'}</NextButton>
-        </ButtonWrapper>
-      </FormTemplate>
-    </RegisterSection>
+    <>
+      <RegisterSection>
+        <PrevButton formStep={formStep} type="button" onClick={prevPage}>
+          이전
+        </PrevButton>
+        <CancelButton formStep={formStep} type="button" onClick={onCancel}>
+          취소
+        </CancelButton>
+        <FormTemplate onSubmit={handleSubmit(onSubmit, onError)}>
+          {formStep === 1 && <FirstForm setProgress={setProgress} errors={errors} register={register} />}
+          {formStep === 2 && (
+            <SecondForm
+              setProgress={setProgress}
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              watch={watch}
+            />
+          )}
+          {formStep === 3 && <ThirdForm setProgress={setProgress} setPreview={setPreview} preview={preview} />}
+          {formStep === 4 && (
+            <FourthForm
+              setProgress={setProgress}
+              setValue={setValue}
+              errors={errors}
+              register={register}
+              watch={watch}
+            />
+          )}
+          <ButtonWrapper>
+            <NextButton>{formStep === 4 ? '신청하기' : '다음'}</NextButton>
+          </ButtonWrapper>
+        </FormTemplate>
+      </RegisterSection>
+    </>
   )
 }
 
@@ -160,7 +178,16 @@ const PrevButton = styled.button<{ formStep: number }>`
   display: ${({ formStep }) => (formStep === 1 ? 'none' : 'inline-block')};
 `
 
-const NextButton = styled.button``
+const NextButton = styled.button`
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0099fe;
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+`
 
 const ProgressStatusBox = styled.div`
   display: flex;
