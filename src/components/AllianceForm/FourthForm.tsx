@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import type { IAllianceForm } from '.'
 import type { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from 'react-hook-form'
@@ -7,12 +7,14 @@ const FourthForm = ({
   register,
   watch,
   setValue,
-  errors
+  errors,
+  setProgress
 }: {
   register: UseFormRegister<IAllianceForm>
   watch: UseFormWatch<IAllianceForm>
   setValue: UseFormSetValue<IAllianceForm>
   errors: FieldErrors<IAllianceForm>
+  setProgress: React.Dispatch<React.SetStateAction<number>>
 }) => {
   const [isAuth, setIsAuth] = useState(false)
   const [verifyCode, setVerifyCode] = useState('')
@@ -51,6 +53,11 @@ const FourthForm = ({
     //   }
     // }
   }
+
+  useEffect(() => {
+    setProgress(100)
+  }, [])
+
   return (
     <>
       <h3 style={{ marginTop: '3rem' }}>이름과 연락처를 알려주세요</h3>
@@ -72,6 +79,7 @@ const FourthForm = ({
           <span style={{ marginRight: '1rem' }}>휴대폰 번호*</span>
           <input
             type="tel"
+            maxLength={11}
             placeholder="숫자만 입력"
             {...register('phone', {
               required: '휴대폰 번호를 입력해주세요'

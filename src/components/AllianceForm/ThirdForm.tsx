@@ -1,28 +1,40 @@
 import axios from 'axios'
-import React from 'react'
-
-import type { IAllianceForm } from '.'
-import type { FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import React, { useEffect } from 'react'
+import styled from 'styled-components'
 
 const ThirdForm = ({
-  register,
-  watch,
-  setValue,
-  errors
+  setPreview,
+  preview,
+  setProgress
 }: {
-  register: UseFormRegister<IAllianceForm>
-  watch: UseFormWatch<IAllianceForm>
-  setValue: UseFormSetValue<IAllianceForm>
-  errors: FieldErrors<IAllianceForm>
+  setPreview: React.Dispatch<
+    React.SetStateAction<
+      {
+        image: string
+        name: string
+      }[]
+    >
+  >
+  preview: { image: string; name: string }[]
+  setProgress: React.Dispatch<React.SetStateAction<number>>
 }) => {
   const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
     // TODO: 해당 부분 api 따로 별도 제작 예정
     const formData = new FormData()
     const { files } = e.target
+    console.log(e.target)
     if (files && files.length < 5) {
       Object.keys(files).forEach((key, i) => {
+        if (preview.length < 4) {
+          setPreview((prev) => prev.concat({ image: URL.createObjectURL(files[i]), name: files[i].name }))
+        } else {
+          e.target.value = ''
+          return alert('파일은 4개까지만 업로드 가능합니다.')
+        }
         formData.append('files', files[i])
       })
+
       // POST요청
       // hosturl: 뭐지?
       // params: /online-sales-request/file/parkinglot-photo
@@ -35,25 +47,79 @@ const ThirdForm = ({
     }
   }
 
+  const onDeletePreview = (image: string) => {
+    setPreview((prev) => prev.filter((item) => item.image !== image))
+  }
+
+  useEffect(() => {
+    setProgress(75)
+  }, [])
+
   return (
     <>
+      <h3 style={{ marginTop: '2rem', fontSize: '22px', lineHeight: '32px' }}>
+        주차장 사진을 등록해주세요
+        <br />
+        4장까지 등록가능
+      </h3>
       <div style={{ margin: '2rem 0' }}>
-        <label>
-          {/* 파일 첨부는 최종단계에서 진행되어야 하는 문제로 로컬에 임시 저장하는 방법을 구상해야함 */}
-          주차장 사진을 사진첨부해 주세요(선택)
-          <input
-            style={{ marginLeft: '1rem' }}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => onSaveFiles(e)}
-            maxLength={4}
-          />
-        </label>
+        {/* 파일 첨부는 최종단계에서 진행되어야 하는 문제로 로컬에 임시 저장하는 방법을 구상해야함 */}
+        <ImageInput type="file" id="file" accept="image/*" multiple onChange={(e) => onSaveFiles(e)} />
+        <ImageLabel htmlFor="file">파일찾기</ImageLabel>
       </div>
-      {/* 이부분에 올린사진 예시 추가 최대 4장 */}
+      {preview.length > 0 &&
+        preview.map(({ image, name }, i) => {
+          return (
+            <ImageContainer key={i}>
+              <PreviewImage alt={name} src={image} />
+              <DeleteButton onClick={() => onDeletePreview(image)} type="button">
+                X
+              </DeleteButton>
+            </ImageContainer>
+          )
+        })}
     </>
   )
 }
 
 export default ThirdForm
+
+const PreviewImage = styled.img`
+  width: 100%;
+  object-fit: contain;
+`
+
+const ImageInput = styled.input`
+  display: none;
+`
+
+const ImageLabel = styled.label`
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  border: 1px solid #0099fe;
+  color: #0099fe;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+`
+
+const ImageContainer = styled.div`
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin-bottom: 1rem;
+`
+
+const DeleteButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: -10px;
+  background-color: transparent;
+  border: none;
+  color: lightgrey;
+  font-size: 38px;
+  font-weight: bolder;
+  cursor: pointer;
+`

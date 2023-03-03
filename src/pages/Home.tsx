@@ -69,8 +69,26 @@ const Home = () => {
 
 export default Home
 
+const ProgressBarContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: -1rem -1rem 0 -1rem;
+`
+
+const ProgressBar = styled.span`
+  /* width: calc(100% / 5); */
+  width: 100%;
+  height: 12px;
+  background-color: #f2f2f2;
+  /* :first-child {
+    background-color: #0099fe;
+  } */
+`
+
 const HeaderTitle = styled.h3`
+  margin: 2rem 0;
   font-size: 22px;
+  font-weight: bolder;
 `
 
 const RequestTemplate = styled.div`
@@ -84,6 +102,7 @@ const RequestTemplate = styled.div`
 `
 
 const RequestLabel = styled.label<{ formType: string; to: string }>`
+  line-height: 24px;
   font-size: 18px;
   color: ${({ formType, to }) => (formType === to ? '#0099fe' : '#000')};
 `

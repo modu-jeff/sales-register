@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import type { IAllianceForm } from '.'
@@ -6,11 +6,16 @@ import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 
 const FirstForm = ({
   register,
-  errors
+  errors,
+  setProgress
 }: {
   register: UseFormRegister<IAllianceForm>
   errors: FieldErrors<IAllianceForm>
+  setProgress: React.Dispatch<React.SetStateAction<number>>
 }) => {
+  useEffect(() => {
+    setProgress(25)
+  }, [])
   return (
     <>
       <HeaderTitle>해당사항을 선택해주세요</HeaderTitle>

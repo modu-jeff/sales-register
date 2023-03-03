@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
 
@@ -11,12 +11,14 @@ const SecondForm = ({
   register,
   setValue,
   watch,
-  errors
+  errors,
+  setProgress
 }: {
   register: UseFormRegister<IAllianceForm>
   setValue: UseFormSetValue<IAllianceForm>
   watch: UseFormWatch<IAllianceForm>
   errors: FieldErrors<IAllianceForm>
+  setProgress: React.Dispatch<React.SetStateAction<number>>
 }) => {
   const [openPostCode, setOpenPostCode] = useState(false)
 
@@ -72,6 +74,10 @@ const SecondForm = ({
     setValue('roadViewTilt', tilt)
     setValue('roadViewZoom', zoom ? zoom : 0)
   }
+
+  useEffect(() => {
+    setProgress(50)
+  }, [])
 
   return (
     <>
