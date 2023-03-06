@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import FirstForm from './FirstForm'
-import FourthForm from './FourthForm'
-import SecondForm from './SecondForm'
-import ThirdForm from './ThirdForm'
+import FirstForm from '@/components/ConsignmentForm/FirstForm'
+import FourthForm from '@/components/ConsignmentForm/FourthForm'
+import SecondForm from '@/components/ConsignmentForm/SecondForm'
+import ThirdForm from '@/components/ConsignmentForm/ThirdForm'
 
 import type { FieldErrors, FieldValues } from 'react-hook-form'
 
