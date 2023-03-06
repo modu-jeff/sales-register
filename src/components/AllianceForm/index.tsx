@@ -55,6 +55,7 @@ const AllianceFormContainer = ({ setProgress }: { setProgress: React.Dispatch<Re
 
   const [formStep, setFormStep] = useState(1)
   const [preview, setPreview] = useState<{ image: string; name: string }[]>([])
+  const [photos, setPhotos] = useState<{ path: string; thumbnailPath: string; width: number; height: number }[]>([])
 
   const { handleSubmit, register, setValue, watch, formState } = useForm<IAllianceForm>({ mode: 'onChange' })
   const { errors } = formState
@@ -68,10 +69,8 @@ const AllianceFormContainer = ({ setProgress }: { setProgress: React.Dispatch<Re
     switch (formStep) {
       case 4:
         return setFormStep(3)
-
       case 3:
         return setFormStep(2)
-
       case 2:
         return setFormStep(1)
     }
@@ -80,7 +79,7 @@ const AllianceFormContainer = ({ setProgress }: { setProgress: React.Dispatch<Re
   const onSubmit = async (data: FieldValues) => {
     // data 타입은 IAllianceForm임
     const { parkingLotImage, ...rest } = data
-    const host = `${import.meta.env.VITE_API_HOST}/partner`
+    const host = `${import.meta.env.VITE_API_HOST}partner`
     const endPoint = '/online-sales-request'
 
     // POST 요청시 formattedData를 body에 담아서 보낼 것
@@ -99,6 +98,7 @@ const AllianceFormContainer = ({ setProgress }: { setProgress: React.Dispatch<Re
         isSiteManager: data.parkinglotOptions.isSiteManager === 'true',
         isBarriers: data.parkinglotOptions.isBarriers === 'true'
       },
+      parkinglotPhotos: { files: [...photos] },
       isPrivacyAgreed: data.isPrivacyAgreed === 'true',
       buildingType: Number(data.buildingType),
       ownershipType: Number(data.ownershipType)
@@ -145,7 +145,15 @@ const AllianceFormContainer = ({ setProgress }: { setProgress: React.Dispatch<Re
               watch={watch}
             />
           )}
-          {formStep === 3 && <ThirdForm setProgress={setProgress} setPreview={setPreview} preview={preview} />}
+          {formStep === 3 && (
+            <ThirdForm
+              setPhotos={setPhotos}
+              photos={photos}
+              setProgress={setProgress}
+              setPreview={setPreview}
+              preview={preview}
+            />
+          )}
           {formStep === 4 && (
             <FourthForm
               setProgress={setProgress}

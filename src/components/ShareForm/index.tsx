@@ -55,6 +55,7 @@ const ShareFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React
 
   const [formStep, setFormStep] = useState(1)
   const [preview, setPreview] = useState<{ image: string; name: string }[]>([])
+  const [photos, setPhotos] = useState<{ path: string; thumbnailPath: string; width: number; height: number }[]>([])
 
   const { handleSubmit, register, setValue, watch, formState } = useForm<IShareForm>({ mode: 'onChange' })
   const { errors } = formState
@@ -78,7 +79,7 @@ const ShareFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React
   const onSubmit = async (data: FieldValues) => {
     // data 타입은 IAllianceForm임
     const { parkingLotImage, ...rest } = data
-    const host = `${import.meta.env.VITE_API_HOST}/partner`
+    const host = `${import.meta.env.VITE_API_HOST}partner`
     const endPoint = '/online-sales-request'
 
     // POST 요청시 formattedData를 body에 담아서 보낼 것
@@ -90,13 +91,14 @@ const ShareFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React
       },
       numberOfPlace: Number(data.numberOfParkinglot),
       numberOfParkinglot: 1,
-      partnerType: 3,
+      partnerType: 2,
       isOperates24Hours: data.isOperates24Hours === 'true',
       parkinglotOptions: {
         isExternalRestricted: data.parkinglotOptions.isExternalRestricted === 'true',
-        isDoubleParked: data.parkinglotOptions.isDoubleParked === 'true',
-        isNotReservedSpace: data.parkinglotOptions.isNotReservedSpace === 'true'
+        isSiteManager: data.parkinglotOptions.isSiteManager === 'true',
+        isBarriers: data.parkinglotOptions.isBarriers === 'true'
       },
+      parkinglotPhotos: { files: [...photos] },
       isPrivacyAgreed: data.isPrivacyAgreed === 'true',
       buildingType: Number(data.buildingType),
       ownershipType: Number(data.ownershipType)
@@ -143,7 +145,15 @@ const ShareFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React
               watch={watch}
             />
           )}
-          {formStep === 3 && <ThirdForm setPreview={setPreview} preview={preview} setProgress={setProgress} />}
+          {formStep === 3 && (
+            <ThirdForm
+              setPhotos={setPhotos}
+              photos={photos}
+              setProgress={setProgress}
+              setPreview={setPreview}
+              preview={preview}
+            />
+          )}
           {formStep === 4 && (
             <FourthForm
               setProgress={setProgress}

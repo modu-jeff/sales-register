@@ -3,10 +3,28 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 const ThirdForm = ({
+  setPhotos,
+  photos,
   setPreview,
   preview,
   setProgress
 }: {
+  setPhotos: React.Dispatch<
+    React.SetStateAction<
+      {
+        path: string
+        thumbnailPath: string
+        width: number
+        height: number
+      }[]
+    >
+  >
+  photos: {
+    path: string
+    thumbnailPath: string
+    width: number
+    height: number
+  }[]
   setPreview: React.Dispatch<
     React.SetStateAction<
       {
@@ -18,11 +36,14 @@ const ThirdForm = ({
   preview: { image: string; name: string }[]
   setProgress: React.Dispatch<React.SetStateAction<number>>
 }) => {
-  const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSaveFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-    // TODO: 해당 부분 api 따로 별도 제작 예정
+
     const formData = new FormData()
+    const host = `${import.meta.env.VITE_API_HOST}partner`
+    const endPoint = '/online-sales-request/file/photos'
     const { files } = e.target
+
     if (files && files.length < 5) {
       Object.keys(files).forEach((key, i) => {
         if (preview.length < 4) {
@@ -34,20 +55,27 @@ const ThirdForm = ({
         formData.append('files', files[i])
       })
 
-      // POST요청
-      // hosturl: 뭐지?
-      // params: /online-sales-request/file/parkinglot-photo
-      // headers: { 'Content-Type': 'multipart/form-data' }
-      // body: formData중 files만
-      // response: data.files[i].path로 옴 files는 배열, 배열안에 {path, thumbnailPath, width, height}로 옴
-      // setValue('parkinglotPhotos', `api응답값`)
+      try {
+        const response = await axios.post(`${host}${endPoint}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        const { data } = response
+        console.log(data)
+        setPhotos((prev) => prev.concat(data.data.files))
+      } catch (err) {
+        console.error(err)
+      }
     } else {
       return alert('파일은 4개까지만 업로드 가능합니다.')
     }
   }
 
-  const onDeletePreview = (image: string) => {
-    setPreview((prev) => prev.filter((item) => item.image !== image))
+  console.log(photos)
+
+  const onDeletePreview = (index: number) => {
+    // setPreview((prev) => prev.filter((item) => item.image !== image))
+    setPreview((prev) => prev.filter((item, i) => i !== index))
+    setPhotos((prev) => prev.filter((item, i) => i !== index))
   }
 
   useEffect(() => {
@@ -71,7 +99,7 @@ const ThirdForm = ({
           return (
             <ImageContainer key={i}>
               <PreviewImage alt={name} src={image} />
-              <DeleteButton onClick={() => onDeletePreview(image)} type="button">
+              <DeleteButton onClick={() => onDeletePreview(i)} type="button">
                 X
               </DeleteButton>
             </ImageContainer>
