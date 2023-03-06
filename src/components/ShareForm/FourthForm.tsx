@@ -30,8 +30,15 @@ const FourthForm = ({
       const { data } = response
       setIsAuth(true)
       setValue('authCode.authCodeSeq', data.data.authCodeSeq)
-    } catch (err) {
-      console.error(err)
+    } catch (err: any) {
+      switch (err.code) {
+        case 10000:
+          return alert(err.message)
+        case 10201:
+          return alert(err.message)
+        case 10200:
+          return alert(err.message)
+      }
     }
   }
 

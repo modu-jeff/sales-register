@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -74,9 +75,11 @@ const ShareFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React
     }
   }
 
-  const onSubmit = (data: FieldValues) => {
-    // data 타입은 IShareForm임
+  const onSubmit = async (data: FieldValues) => {
+    // data 타입은 IAllianceForm임
     const { parkingLotImage, ...rest } = data
+    const host = `${import.meta.env.VITE_API_HOST}/partner`
+    const endPoint = '/online-sales-request'
 
     // POST 요청시 formattedData를 body에 담아서 보낼 것
     const formattedData = {
@@ -85,7 +88,8 @@ const ShareFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React
         isHourly: data.parkingTypes.isHourly === 'hourly',
         isMonthly: data.parkingTypes.isMonthly === 'monthly'
       },
-      numberOfParkinglot: Number(data.numberOfParkinglot),
+      numberOfPlace: Number(data.numberOfParkinglot),
+      numberOfParkinglot: 1,
       partnerType: 3,
       isOperates24Hours: data.isOperates24Hours === 'true',
       parkinglotOptions: {
@@ -106,8 +110,9 @@ const ShareFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React
       case 3:
         return setFormStep(4)
       case 4: {
-        // formattedData를 body에 담아서 보내는 api 코드 작성
-        return console.log(formattedData)
+        const response = await axios.post(`${host}${endPoint}`, formattedData)
+        const { data } = response
+        return
       }
     }
 
