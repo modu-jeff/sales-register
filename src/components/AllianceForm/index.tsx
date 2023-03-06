@@ -52,7 +52,7 @@ export interface IAllianceForm {
 const AllianceFormContainer = ({ setProgress }: { setProgress: React.Dispatch<React.SetStateAction<number>> }) => {
   const navigate = useNavigate()
 
-  const [formStep, setFormStep] = useState(1)
+  const [formStep, setFormStep] = useState(4)
   const [preview, setPreview] = useState<{ image: string; name: string }[]>([])
 
   const { handleSubmit, register, setValue, watch, formState } = useForm<IAllianceForm>({ mode: 'onChange' })

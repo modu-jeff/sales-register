@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
 import type { IShareForm } from '.'
@@ -20,38 +21,38 @@ const FourthForm = ({
   const [verifyCode, setVerifyCode] = useState('')
 
   const phoneValidation = async () => {
-    const host = 'https://api-dev.modudev.cloud/user'
+    const host = `${import.meta.env.VITE_API_HOST}/user`
     const endPoint = '/code/send'
     if (!watch().phone) return alert('폰번을 넣어주셈')
 
     try {
+      const response = await axios.post(`${host}${endPoint}`, { phone: watch().phone })
+      const { data } = response
       setIsAuth(true)
-      // const response = await axios.post(`${host}${endPoint}`, { phone: watch().phone })
-      // const { data } = response
-      // setValue('authCode.authCodeSeq', data.data.authCodeSeq)
-      setValue('authCode.authCodeSeq', 10)
+      setValue('authCode.authCodeSeq', data.data.authCodeSeq)
     } catch (err) {
       console.error(err)
     }
   }
 
   const verifyAuthCode = async () => {
-    const host = 'https://api-dev.modudev.cloud/user'
+    const host = `${import.meta.env.VITE_API_HOST}/user`
     const endPoint = '/code/verify'
     const { authCodeSeq } = watch().authCode
-    // TODO: 나중에 백엔드에서 에러코드를 정리하고, 그에 맞게 에러처리를 해야함
-    // try {
-    //   await axios.post(`${host}${endPoint}`, { authCodeSeq, code: verifyCode, phone: watch().phone })
-    // } catch (err: any) {
-    //   switch (err.code) {
-    //     case 10204:
-    //       return alert(err.message)
-    //     case 10203:
-    //       return alert(err.message)
-    //     case 10202:
-    //       return alert(err.message)
-    //   }
-    // }
+
+    try {
+      await axios.post(`${host}${endPoint}`, { authCodeSeq, code: verifyCode, phone: watch().phone })
+      alert('인증되었습니다.')
+    } catch (err: any) {
+      switch (err.code) {
+        case 10204:
+          return alert(err.message)
+        case 10203:
+          return alert(err.message)
+        case 10202:
+          return alert(err.message)
+      }
+    }
   }
 
   useEffect(() => {
