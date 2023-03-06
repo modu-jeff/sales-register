@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import AllianceForm from './pages/AllianceForm'
-import ConsignmentForm from './pages/ConsignmentForm'
-import ShareForm from './pages/ShareForm'
-import Home from './pages/Home'
+import AllianceForm from '@/pages/AllianceForm'
+import ConsignmentForm from '@/pages/ConsignmentForm'
+import ShareForm from '@/pages/ShareForm'
+import Home from '@/pages/Home'
 
 function Router() {
   const [progress, setProgress] = useState(20)

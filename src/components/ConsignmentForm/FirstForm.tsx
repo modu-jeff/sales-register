@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import type { IConsignmentForm } from '.'
+import type { IConsignmentForm } from '@/components/ConsignmentForm'
+
 import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 
 const FirstForm = ({

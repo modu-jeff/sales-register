@@ -1,7 +1,8 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 
-import type { IAllianceForm } from '.'
+import type { IAllianceForm } from '@/components/AllianceForm'
+
 import type { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from 'react-hook-form'
 
 const FourthForm = ({

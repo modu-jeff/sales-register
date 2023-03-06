@@ -1,7 +1,8 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 
-import type { IConsignmentForm } from '.'
+import type { IConsignmentForm } from '@/components/ConsignmentForm'
+
 import type { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from 'react-hook-form'
 
 const FourthForm = ({

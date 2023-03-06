@@ -3,7 +3,8 @@ import React, { useMemo, useState, useEffect } from 'react'
 import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
 
-import type { IShareForm } from '.'
+import type { IShareForm } from '@/components/ShareForm'
+
 import type { Address } from 'react-daum-postcode'
 import type { FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 

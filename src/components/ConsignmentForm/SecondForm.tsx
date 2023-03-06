@@ -3,7 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import DaumPostCode from 'react-daum-postcode'
 import { Roadview } from 'react-kakao-maps-sdk'
 
-import type { IConsignmentForm } from '.'
+import type { IConsignmentForm } from '@/components/ConsignmentForm'
+
 import type { Address } from 'react-daum-postcode'
 import type { FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 

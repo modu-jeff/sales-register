@@ -1,7 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-import type { IShareForm } from '.'
+import type { IShareForm } from '@/components/ShareForm'
+
 import type { FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
 const FourthForm = ({

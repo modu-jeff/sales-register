@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import type { IShareForm } from '.'
+import type { IShareForm } from '@/components/ShareForm'
+
 import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 
 const FirstForm = ({

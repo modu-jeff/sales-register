@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import type { IAllianceForm } from '.'
+import type { IAllianceForm } from '@/components/AllianceForm'
+
 import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 
 const FirstForm = ({
