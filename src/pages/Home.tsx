@@ -54,7 +54,7 @@ const Home = () => {
 
       <MultipleAllianceRequestBox
         onClick={() => {
-          alert('팝업 들어가유\n전화번호 안내도 들어가유 라는 메시지 표출')
+          alert('전화문의 주세요 02-1234-5678\n평일 09:00 ~ 18:00')
         }}
       >
         2개소 이상 제휴신청을 원하시나요?
